@@ -3,8 +3,6 @@ kind: ExternalSecret
 metadata:
   name: hshp-vps-cloudflare-token
   namespace: external-secrets
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
