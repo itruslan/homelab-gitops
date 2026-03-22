@@ -11,16 +11,16 @@ spec:
   selector:
     app.kubernetes.io/name: anylink
   ports:
-    - name: vpn-tcp
-      port: 443
-      targetPort: 443
-      protocol: TCP
-    - name: vpn-udp
-      port: 443
-      targetPort: 443
-      protocol: UDP
     - name: admin
-      port: 8443
+      port: 443
       targetPort: 8800
       protocol: TCP
+    - name: vpn-tcp
+      port: 8443
+      targetPort: 8443
+      protocol: TCP
+    - name: vpn-udp
+      port: 8443
+      targetPort: 8443
+      protocol: UDP
   sessionAffinity: ClientIP

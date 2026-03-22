@@ -32,9 +32,9 @@ data:
     jwt_secret = "placeholder"
 
     # Service listening addresses
-    server_addr = ":443"
+    server_addr = ":8443"
     server_dtls = false
-    server_dtls_addr = ":443"
+    server_dtls_addr = ":8443"
     admin_addr = ":8800"
     proxy_protocol = false
 
