@@ -4,7 +4,7 @@ external-dns:
     webhook:
       image:
         repository: ghcr.io/mirceanton/external-dns-provider-mikrotik
-        tag: latest
+        tag: v1.4.30
       env:
         - name: MIKROTIK_BASEURL
           valueFrom:
@@ -21,8 +21,8 @@ external-dns:
             secretKeyRef:
               name: mikrotik-api
               key: password
-        - name: MIKROTIK_SKIP_TLS_VERIFY
-          value: "true"
+        - name: MIKROTIK_DEFAULT_COMMENT
+          value: "Managed by ExternalDNS"
   sources:
     - gateway-httproute
     - service
