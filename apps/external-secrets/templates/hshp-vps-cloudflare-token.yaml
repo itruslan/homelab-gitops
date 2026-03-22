@@ -1,0 +1,19 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: hshp-vps-cloudflare-token
+  namespace: external-secrets
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: hshp-vps-cloudflare-token
+  data:
+  - secretKey: token
+    remoteRef:
+      key: homelab/clusters/hshp-vps
+      property: cloudflareToken
