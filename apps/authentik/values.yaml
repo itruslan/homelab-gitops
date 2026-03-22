@@ -5,16 +5,17 @@ authentik:
         name: authentik-bootstrap
 
   authentik:
-    existingSecret:
-      secretName: authentik-bootstrap
-      secretKey: secret-key
+    postgresql:
+      host: authentik-pg-rw
+      name: authentik
+      user: authentik
 
   server:
     ingress:
       enabled: false
 
   postgresql:
-    enabled: true
+    enabled: false
 
   redis:
     enabled: true
