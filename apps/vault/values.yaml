@@ -9,9 +9,11 @@ vault:
           ui = true
 
           listener "tcp" {
-            tls_disable     = 1
-            address         = "[::]:8200"
-            cluster_address = "[::]:8201"
+            tls_disable                       = 1
+            address                           = "[::]:8200"
+            cluster_address                   = "[::]:8201"
+            x_forwarded_for_authorized_addrs  = "0.0.0.0/0"
+            x_forwarded_for_reject_not_present = false
           }
 
           storage "raft" {
