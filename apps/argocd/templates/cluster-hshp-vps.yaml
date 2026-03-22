@@ -23,10 +23,10 @@ spec:
         server: https://REDACTED:6443
         config: |
           {
-            "bearerToken": "{{ .bearerToken }}",
+            "bearerToken": "{{ "{{" }} .bearerToken {{ "}}" }}",
             "tlsClientConfig": {
               "insecure": false,
-              "caData": "{{ .caData }}"
+              "caData": "{{ "{{" }} .caData {{ "}}" }}"
             }
           }
   data:
