@@ -8,6 +8,10 @@ loki:
 
   storage:
     type: filesystem
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
 
   singleBinary:
     replicas: 1
