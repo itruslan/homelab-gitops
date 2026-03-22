@@ -26,6 +26,20 @@ grafana:
       role_attribute_path: preferred_username == 'itruslan' && 'Admin' || 'Viewer'
       allow_sign_up: true
 
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: VictoriaMetrics
+          type: prometheus
+          url: http://vmsingle-vm.monitoring.svc:8428
+          access: proxy
+          isDefault: true
+        - name: Loki
+          type: loki
+          url: http://loki.monitoring.svc:3100
+          access: proxy
+
   envFromSecret: grafana-oidc
 
   defaultDashboardsEnabled: true
