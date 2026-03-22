@@ -15,6 +15,12 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: vault-unseal-keys
+      jsonPointers:
+        - /data
   syncPolicy:
     automated:
       prune: true
