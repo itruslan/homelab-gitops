@@ -4,6 +4,7 @@ external-dns:
     webhook:
       image:
         repository: ghcr.io/mirceanton/external-dns-provider-mikrotik
+        tag: v1.4.30
       env:
         - name: MIKROTIK_BASEURL
           valueFrom:
