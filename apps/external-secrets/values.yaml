@@ -1,2 +1,4 @@
 external-secrets:
   installCRDs: true
+  webhook:
+    port: 8443
