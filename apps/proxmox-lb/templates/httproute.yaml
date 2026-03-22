@@ -1,0 +1,145 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pve-1-redirect
+  namespace: proxmox-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - pve-1.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pve-1
+  namespace: proxmox-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - pve-1.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: pve-1
+      port: 8006
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pve-2-redirect
+  namespace: proxmox-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - pve-2.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pve-2
+  namespace: proxmox-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - pve-2.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: pve-2
+      port: 8006
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pve-3-redirect
+  namespace: proxmox-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - pve-3.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pve-3
+  namespace: proxmox-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - pve-3.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: pve-3
+      port: 8006
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: proxmox-redirect
+  namespace: proxmox-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - pve.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: proxmox
+  namespace: proxmox-lb
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: pve.itruslan.ru
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - pve.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: proxmox
+      port: 8006

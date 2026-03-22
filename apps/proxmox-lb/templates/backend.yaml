@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-config
+  namespace: proxmox-lb
+data:
+  haproxy.cfg: |
+    global
+      log stdout format raw local0
+      maxconn 4096
+
+    defaults
+      log global
+      mode http
+      option httplog
+      option dontlognull
+      option forwardfor
+      option http-server-close
+      timeout connect 5s
+      timeout client 30s
+      timeout server 30s
+      timeout tunnel 3600s
+
+    frontend proxmox_front
+      bind *:8006
+      default_backend proxmox_back
+
+    backend proxmox_back
+      balance roundrobin
+      option httpchk GET /api2/json/version
+      http-check expect status 200
+      cookie PVENODE insert indirect nocache
+      {{- range .Values.nodes }}
+      server {{ .name }} {{ .ip }}:8006 ssl verify none check cookie {{ .name }}
+      {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy
+  namespace: proxmox-lb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy
+  template:
+    metadata:
+      labels:
+        app: haproxy
+    spec:
+      containers:
+        - name: haproxy
+          image: haproxy:lts-alpine
+          ports:
+            - containerPort: 8006
+          volumeMounts:
+            - name: config
+              mountPath: /usr/local/etc/haproxy/haproxy.cfg
+              subPath: haproxy.cfg
+      volumes:
+        - name: config
+          configMap:
+            name: haproxy-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxmox
+  namespace: proxmox-lb
+spec:
+  selector:
+    app: haproxy
+  ports:
+    - name: https
+      port: 8006
+      targetPort: 8006
+{{- range .Values.nodes }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+  namespace: proxmox-lb
+spec:
+  clusterIP: None
+  ports:
+    - name: https
+      port: 8006
+      protocol: TCP
+      appProtocol: kubernetes.io/https
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: {{ .name }}
+  namespace: proxmox-lb
+  labels:
+    kubernetes.io/service-name: {{ .name }}
+addressType: IPv4
+ports:
+  - name: https
+    port: 8006
+    protocol: TCP
+endpoints:
+  - addresses: ["{{ .ip }}"]
+{{- end }}

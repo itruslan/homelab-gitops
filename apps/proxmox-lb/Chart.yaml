@@ -1,0 +1,3 @@
+apiVersion: v2
+name: proxmox-lb
+version: 0.1.0
