@@ -11,27 +11,22 @@ data:
 
     defaults
       log global
-      mode http
-      option httplog
+      mode tcp
+      option tcplog
       option dontlognull
-      option forwardfor
-      option http-server-close
       timeout connect 5s
       timeout client 30s
       timeout server 30s
-      timeout tunnel 3600s
 
     frontend proxmox_front
       bind *:8006
       default_backend proxmox_back
 
     backend proxmox_back
-      balance roundrobin
-      option httpchk GET /api2/json/version
-      http-check expect status 200
-      cookie PVENODE insert indirect nocache
+      balance source
+      option tcp-check
       {{- range .Values.nodes }}
-      server {{ .name }} {{ .ip }}:8006 ssl verify none check cookie {{ .name }}
+      server {{ .name }} {{ .ip }}:8006 check
       {{- end }}
 ---
 apiVersion: apps/v1
@@ -75,6 +70,7 @@ spec:
     - name: https
       port: 8006
       targetPort: 8006
+      appProtocol: kubernetes.io/https
 {{- range .Values.nodes }}
 ---
 apiVersion: v1
