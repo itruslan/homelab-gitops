@@ -23,3 +23,11 @@ spec:
     allowedRoutes:
       namespaces:
         from: All
+  - name: tls-passthrough
+    protocol: TLS
+    port: 443
+    tls:
+      mode: Passthrough
+    allowedRoutes:
+      namespaces:
+        from: All
