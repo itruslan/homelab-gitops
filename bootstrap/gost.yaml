@@ -6,7 +6,7 @@ metadata:
 spec:
   project: infra
   source:
-    repoURL: git@github.com:itruslan/homelab-gitops.git
+    repoURL: https://github.com/itruslan/homelab-gitops.git
     targetRevision: HEAD
     path: apps/gost
     helm:
