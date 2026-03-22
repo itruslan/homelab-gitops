@@ -1,0 +1,26 @@
+external-dns:
+  provider:
+    name: mikrotik
+  env:
+    - name: MIKROTIK_BASEURL
+      valueFrom:
+        secretKeyRef:
+          name: mikrotik-api
+          key: url
+    - name: MIKROTIK_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: mikrotik-api
+          key: username
+    - name: MIKROTIK_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mikrotik-api
+          key: password
+    - name: MIKROTIK_SKIP_TLS_VERIFY
+      value: "true"
+  sources:
+    - gateway-httproute
+    - service
+  policy: sync
+  txtOwnerId: homelab
