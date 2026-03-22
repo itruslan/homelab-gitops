@@ -1,0 +1,26 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: repo-vps-gitops
+  namespace: argocd
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: repo-vps-gitops
+    creationPolicy: Owner
+    template:
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: repository
+      data:
+        type: git
+        url: git@github.com:itruslan/vps-gitops.git
+        sshPrivateKey: "{{ .sshPrivateKey }}"
+  data:
+  - secretKey: sshPrivateKey
+    remoteRef:
+      key: homelab/clusters/hshp-vps
+      property: sshPrivateKey
