@@ -2,6 +2,9 @@ application:
   applicationName: anylink
 
   deployment:
+    annotations:
+      configmap.reloader.stakater.com/reload: "anylink-conf"
+
     image:
       repository: cherts/anylink
       tag: "0.13.1"
