@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gost
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gost
+  template:
+    metadata:
+      labels:
+        app: gost
+    spec:
+      containers:
+      - name: gost
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args:
+        - -C
+        - /etc/gost/gost.yml
+        volumeMounts:
+        - name: config
+          mountPath: /etc/gost
+          readOnly: true
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+      volumes:
+      - name: config
+        secret:
+          secretName: gost-config
