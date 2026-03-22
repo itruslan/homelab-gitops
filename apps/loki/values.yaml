@@ -1,0 +1,40 @@
+loki:
+  deploymentMode: SingleBinary
+
+  auth_enabled: false
+
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    type: filesystem
+
+  singleBinary:
+    replicas: 1
+    persistence:
+      enabled: true
+      size: 20Gi
+
+  # Disable distributed components
+  read:
+    replicas: 0
+  write:
+    replicas: 0
+  backend:
+    replicas: 0
+
+  # Disable gateway (internal access only)
+  gateway:
+    enabled: false
+
+  # Disable self-monitoring to avoid circular dependency
+  selfMonitoring:
+    enabled: false
+    grafanaAgent:
+      installOperator: false
+
+  lokiCanary:
+    enabled: false
+
+  test:
+    enabled: false
