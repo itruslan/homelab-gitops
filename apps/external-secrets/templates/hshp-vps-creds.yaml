@@ -14,8 +14,8 @@ spec:
     name: hshp-vps-k8s-creds
     template:
       data:
-        token: "{{ .bearerToken }}"
-        ca: "{{ .caData | b64dec }}"
+        token: '{{ "{{" }} .bearerToken {{ "}}" }}'
+        ca: '{{ "{{" }} .caData | b64dec {{ "}}" }}'
   data:
   - secretKey: bearerToken
     remoteRef:
