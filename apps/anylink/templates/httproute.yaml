@@ -35,18 +35,3 @@ spec:
     - backendRefs:
         - name: anylink
           port: 8800
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: BackendTLSPolicy
-metadata:
-  name: anylink-admin-tls
-  namespace: anylink
-spec:
-  targetRefs:
-    - group: ""
-      kind: Service
-      name: anylink
-      sectionName: admin
-  validation:
-    wellKnownCACertificates: System
-    hostname: anylink-admin.itruslan.ru
