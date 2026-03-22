@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-unseal
+  namespace: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-unseal
+  template:
+    metadata:
+      labels:
+        app: vault-unseal
+    spec:
+      serviceAccountName: vault-unseal
+      containers:
+        - name: unseal
+          image: hashicorp/vault:1.21.2
+          command:
+            - /bin/sh
+            - -c
+            - |
+              while true; do
+                for pod in vault-0 vault-1 vault-2; do
+                  export VAULT_ADDR="http://${pod}.vault-internal.vault.svc.cluster.local:8200"
+                  if vault status 2>/dev/null | grep -q "Sealed.*true"; then
+                    echo "Unsealing ${pod}..."
+                    vault operator unseal "$UNSEAL_KEY_1"
+                  fi
+                done
+                sleep 30
+              done
+          env:
+            - name: UNSEAL_KEY_1
+              valueFrom:
+                secretKeyRef:
+                  name: vault-unseal-keys
+                  key: key-1
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi

@@ -1,0 +1,20 @@
+proxmox-csi-plugin:
+  config:
+    clusters:
+      - url: https://pve-1.itruslan.ru:8006/api2/json
+        insecure: false
+        token_id: terraform@pve!terraform
+        token_secret: ""  # из external-secrets
+        region: homelab
+
+  storageClass:
+    - name: proxmox-nvme
+      storage: local-lvm
+      reclaimPolicy: Delete
+      fstype: ext4
+      isDefault: true
+    - name: proxmox-data
+      storage: data
+      reclaimPolicy: Delete
+      fstype: ext4
+      isDefault: false
