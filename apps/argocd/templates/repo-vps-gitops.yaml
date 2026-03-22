@@ -18,7 +18,7 @@ spec:
       data:
         type: git
         url: git@github.com:itruslan/vps-gitops.git
-        sshPrivateKey: "{{ .sshPrivateKey }}"
+        sshPrivateKey: '{{ "{{" }} .sshPrivateKey {{ "}}" }}'
   data:
   - secretKey: sshPrivateKey
     remoteRef:
