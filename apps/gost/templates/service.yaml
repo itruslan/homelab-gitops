@@ -3,6 +3,10 @@ kind: Service
 metadata:
   name: gost
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.service.hostname }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.hostname }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   selector:

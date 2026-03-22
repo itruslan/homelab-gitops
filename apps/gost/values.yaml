@@ -15,7 +15,8 @@ vault:
   secretPath: homelab/gost/users/itruslan
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
+  hostname: gost.itruslan.ru
   httpPort: 8080
   socks5Port: 1080
 
