@@ -1,0 +1,37 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana-redirect
+  namespace: monitoring
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - grafana.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: grafana.itruslan.ru
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - grafana.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: grafana
+      port: 80
