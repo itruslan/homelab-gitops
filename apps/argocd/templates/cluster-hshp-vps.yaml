@@ -16,6 +16,8 @@ spec:
         labels:
           argocd.argoproj.io/secret-type: cluster
           deploy_gost: "true"
+          deploy_cert_manager: "true"
+          deploy_external_dns: "true"
       data:
         name: hshp-vps
         server: https://REDACTED:6443
