@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: anylink-conf
+  namespace: anylink
+data:
+  server.toml: |
+    # Database
+    db_type = "sqlite3"
+    db_source = "/app/db/anylink.db"
+
+    # Certificate files (from wildcard-itruslan-ru-tls secret)
+    cert_file = "/app/ssl/tls.crt"
+    cert_key = "/app/ssl/tls.key"
+
+    # Files and profile
+    files_path = "/app/conf/files"
+    profile = "/app/conf/profile.xml"
+    profile_name = "anylink"
+
+    # Logging
+    log_level = "info"
+    http_server_log = "true"
+    pprof = false
+
+    # System name
+    issuer = "Reutov Cheburnet Industries"
+    # Admin user (password and jwt_secret set via LINK_ADMIN_PASS and LINK_JWT_SECRET env vars)
+    admin_user = "admin"
+    admin_pass = "placeholder"
+    admin_otp = ""
+    jwt_secret = "placeholder"
+
+    # Service listening addresses
+    server_addr = ":443"
+    server_dtls = false
+    server_dtls_addr = ":443"
+    admin_addr = ":8800"
+    proxy_protocol = false
+
+    # Network
+    link_mode = "tun"
+    ipv4_master = "eth0"
+    ipv4_cidr = "10.20.99.0/24"
+    ipv4_gateway = "10.20.99.1"
+    ipv4_start = "10.20.99.100"
+    ipv4_end = "10.20.99.200"
+
+    # Client limits
+    max_client = 20
+    max_user_client = 3
+    ip_lease = 86400
+    default_group = "one"
+
+    # Keepalive
+    cstp_keepalive = 3
+    cstp_dpd = 20
+    mobile_keepalive = 4
+    mobile_dpd = 60
+
+    # MTU and domain
+    mtu = 1460
+    default_domain = "anylink.itruslan.ru"
+
+    # Timeouts
+    idle_timeout = 0
+    session_timeout = 3600
+    audit_interval = -1
+
+    # Features
+    show_sql = false
+    iptables_nat = true
+    compression = false
+    no_compress_limit = 256
+    display_error = true
+    exclude_export_ip = true
