@@ -12,7 +12,8 @@ proxmox-csi-plugin:
       storage: local-lvm
       reclaimPolicy: Delete
       fstype: ext4
-      isDefault: true
+      annotations:
+        storageclass.kubernetes.io/is-default-class: "true"
     - name: proxmox-data
       storage: data
       reclaimPolicy: Delete
