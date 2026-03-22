@@ -6,7 +6,7 @@ metadata:
 spec:
   parentRefs:
   - name: homelab
-    namespace: argocd
+    namespace: gateway
     sectionName: http
   hostnames:
   - argocd.itruslan.ru
@@ -27,7 +27,7 @@ metadata:
 spec:
   parentRefs:
   - name: homelab
-    namespace: argocd
+    namespace: gateway
     sectionName: https
   hostnames:
   - argocd.itruslan.ru

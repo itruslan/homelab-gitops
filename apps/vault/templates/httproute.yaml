@@ -6,7 +6,7 @@ metadata:
 spec:
   parentRefs:
   - name: homelab
-    namespace: vault
+    namespace: gateway
     sectionName: http
   hostnames:
   - vault.itruslan.ru
@@ -27,7 +27,7 @@ metadata:
 spec:
   parentRefs:
   - name: homelab
-    namespace: vault
+    namespace: gateway
     sectionName: https
   hostnames:
   - vault.itruslan.ru
