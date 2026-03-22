@@ -28,6 +28,15 @@ data:
       {{- range .Values.nodes }}
       server {{ .name }} {{ .ip }}:8006 check
       {{- end }}
+    {{- range $i, $node := .Values.nodes }}
+
+    frontend {{ $node.name }}_front
+      bind *:{{ add 9000 $i }}
+      default_backend {{ $node.name }}_back
+
+    backend {{ $node.name }}_back
+      server {{ $node.name }} {{ $node.ip }}:8006
+    {{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -49,6 +58,9 @@ spec:
           image: haproxy:lts-alpine
           ports:
             - containerPort: 8006
+            {{- range $i, $node := .Values.nodes }}
+            - containerPort: {{ add 9000 $i }}
+            {{- end }}
           volumeMounts:
             - name: config
               mountPath: /usr/local/etc/haproxy/haproxy.cfg
@@ -71,33 +83,19 @@ spec:
       port: 8006
       targetPort: 8006
       appProtocol: kubernetes.io/https
-{{- range .Values.nodes }}
+{{- range $i, $node := .Values.nodes }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .name }}
+  name: {{ $node.name }}
   namespace: proxmox-lb
 spec:
-  clusterIP: None
+  selector:
+    app: haproxy
   ports:
     - name: https
       port: 8006
-      protocol: TCP
+      targetPort: {{ add 9000 $i }}
       appProtocol: kubernetes.io/https
----
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
-metadata:
-  name: {{ .name }}
-  namespace: proxmox-lb
-  labels:
-    kubernetes.io/service-name: {{ .name }}
-addressType: IPv4
-ports:
-  - name: https
-    port: 8006
-    protocol: TCP
-endpoints:
-  - addresses: ["{{ .ip }}"]
 {{- end }}
