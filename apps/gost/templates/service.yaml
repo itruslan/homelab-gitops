@@ -20,3 +20,11 @@ spec:
     port: {{ .Values.service.socks5Port }}
     targetPort: {{ .Values.service.socks5Port }}
     protocol: TCP
+  - name: http-proxy-tls
+    port: {{ .Values.service.httpTlsPort }}
+    targetPort: {{ .Values.service.httpTlsPort }}
+    protocol: TCP
+  - name: socks5-proxy-tls
+    port: {{ .Values.service.socks5TlsPort }}
+    targetPort: {{ .Values.service.socks5TlsPort }}
+    protocol: TCP

@@ -24,9 +24,15 @@ spec:
         - name: config
           mountPath: /etc/gost
           readOnly: true
+        - name: tls
+          mountPath: /etc/gost/tls
+          readOnly: true
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
       volumes:
       - name: config
         secret:
           secretName: gost-config
+      - name: tls
+        secret:
+          secretName: {{ .Values.tls.certSecret }}

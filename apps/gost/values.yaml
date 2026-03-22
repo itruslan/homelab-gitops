@@ -14,10 +14,15 @@ upstreams:
 vault:
   secretPath: homelab/gost/users/itruslan
 
+tls:
+  certSecret: wildcard-itruslan-ru-tls
+
 service:
   type: LoadBalancer
   hostname: gost.itruslan.ru
   httpPort: 8080
+  httpTlsPort: 8443
   socks5Port: 1080
+  socks5TlsPort: 1443
 
 resources: {}
