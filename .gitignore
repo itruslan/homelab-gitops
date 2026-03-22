@@ -1,0 +1,6 @@
+# Helm dependency artifacts (inside wrapper charts)
+charts/**/charts/
+Chart.lock
+render.yaml
+**/*.example
+charts/
