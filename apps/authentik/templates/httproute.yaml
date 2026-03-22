@@ -1,0 +1,37 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: authentik-redirect
+  namespace: authentik
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - auth.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: authentik
+  namespace: authentik
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: auth.itruslan.ru
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - auth.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: authentik-server
+      port: 80

@@ -1,0 +1,20 @@
+authentik:
+  global:
+    envFrom:
+    - secretRef:
+        name: authentik-bootstrap
+
+  authentik:
+    existingSecret:
+      secretName: authentik-bootstrap
+      secretKey: secret-key
+
+  server:
+    ingress:
+      enabled: false
+
+  postgresql:
+    enabled: true
+
+  redis:
+    enabled: true
