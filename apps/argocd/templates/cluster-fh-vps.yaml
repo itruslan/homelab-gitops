@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: cluster-hshp-vps
+  name: cluster-fh-vps
   namespace: argocd
 spec:
   secretStoreRef:
@@ -9,7 +9,7 @@ spec:
     name: vault
   refreshInterval: 1h
   target:
-    name: cluster-hshp-vps
+    name: cluster-fh-vps
     creationPolicy: Owner
     template:
       metadata:
@@ -18,8 +18,9 @@ spec:
           deploy_gost: "true"
           deploy_cert_manager: "true"
           deploy_external_dns: "true"
+          deploy_anylink: "true"
       data:
-        name: hshp-vps
+        name: fh-vps
         server: '{{ "{{" }} .serverUrl {{ "}}" }}'
         config: |
           {
@@ -32,13 +33,13 @@ spec:
   data:
   - secretKey: bearerToken
     remoteRef:
-      key: homelab/clusters/hshp-vps
+      key: homelab/clusters/fh-vps
       property: bearerToken
   - secretKey: caData
     remoteRef:
-      key: homelab/clusters/hshp-vps
+      key: homelab/clusters/fh-vps
       property: caData
   - secretKey: serverUrl
     remoteRef:
-      key: homelab/clusters/hshp-vps
+      key: homelab/clusters/fh-vps
       property: serverUrl

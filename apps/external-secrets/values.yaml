@@ -1,2 +1,8 @@
 external-secrets:
   installCRDs: true
+
+clusters:
+  hshpVps:
+    serverUrl: https://REDACTED:6443
+  fhVps:
+    serverUrl: https://REDACTED:6443

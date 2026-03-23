@@ -1,0 +1,17 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: fh-vps-cloudflare-token
+  namespace: external-secrets
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: fh-vps-cloudflare-token
+  data:
+  - secretKey: token
+    remoteRef:
+      key: homelab/clusters/fh-vps
+      property: cloudflareToken
