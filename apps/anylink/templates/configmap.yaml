@@ -24,7 +24,7 @@ data:
     pprof = false
 
     # System name
-    issuer = "Reutov Cheburnet Industries"
+    issuer = "Cheburnet Industries"
     # Admin user (password and jwt_secret set via LINK_ADMIN_PASS and LINK_JWT_SECRET env vars)
     admin_user = "admin"
     admin_pass = "placeholder"
