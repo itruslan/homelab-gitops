@@ -3,16 +3,9 @@ image:
   tag: "3"
   pullPolicy: IfNotPresent
 
-upstreams:
-  hshpVps:
-    httpAddr: "hshp-vps.itruslan.ru:8443"
-    socks5Addr: "hshp-vps.itruslan.ru:1443"
-  gostFh:
-    httpAddr: "REDACTED:8080"
-    socks5Addr: "REDACTED:1080"
-
 vault:
   secretPath: homelab/gost/users/itruslan
+  upstreamsPath: homelab/gost/upstreams
 
 tls:
   certSecret: wildcard-itruslan-ru-tls
