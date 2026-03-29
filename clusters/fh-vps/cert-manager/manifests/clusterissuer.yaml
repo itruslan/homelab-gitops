@@ -6,13 +6,13 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   acme:
-    email: {{ .Values.clusterIssuer.email }}
-    server: {{ .Values.clusterIssuer.server }}
+    email: admin@itruslan.ru
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-account-key
     solvers:
     - dns01:
         cloudflare:
           apiTokenSecretRef:
-            name: {{ .Values.clusterIssuer.cloudflareTokenSecretName }}
+            name: cloudflare-token
             key: token

@@ -25,18 +25,30 @@ data:
     backend proxmox_back
       balance source
       option tcp-check
-      {{- range .Values.nodes }}
-      server {{ .name }} {{ .ip }}:8006 ssl verify none check
-      {{- end }}
-    {{- range $i, $node := .Values.nodes }}
+      server pve-1 192.168.99.241:8006 ssl verify none check
+      server pve-2 192.168.99.242:8006 ssl verify none check
+      server pve-3 192.168.99.243:8006 ssl verify none check
 
-    frontend {{ $node.name }}_front
-      bind *:{{ add 9000 $i }}
-      default_backend {{ $node.name }}_back
+    frontend pve-1_front
+      bind *:9000
+      default_backend pve-1_back
 
-    backend {{ $node.name }}_back
-      server {{ $node.name }} {{ $node.ip }}:8006 ssl verify none
-    {{- end }}
+    backend pve-1_back
+      server pve-1 192.168.99.241:8006 ssl verify none
+
+    frontend pve-2_front
+      bind *:9001
+      default_backend pve-2_back
+
+    backend pve-2_back
+      server pve-2 192.168.99.242:8006 ssl verify none
+
+    frontend pve-3_front
+      bind *:9002
+      default_backend pve-3_back
+
+    backend pve-3_back
+      server pve-3 192.168.99.243:8006 ssl verify none
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -58,9 +70,9 @@ spec:
           image: haproxy:lts-alpine
           ports:
             - containerPort: 8006
-            {{- range $i, $node := .Values.nodes }}
-            - containerPort: {{ add 9000 $i }}
-            {{- end }}
+            - containerPort: 9000
+            - containerPort: 9001
+            - containerPort: 9002
           volumeMounts:
             - name: config
               mountPath: /usr/local/etc/haproxy/haproxy.cfg
@@ -82,12 +94,11 @@ spec:
     - name: https
       port: 8006
       targetPort: 8006
-{{- range $i, $node := .Values.nodes }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $node.name }}
+  name: pve-1
   namespace: proxmox-lb
 spec:
   selector:
@@ -97,5 +108,34 @@ spec:
   ports:
     - name: https
       port: 8006
-      targetPort: {{ add 9000 $i }}
-{{- end }}
+      targetPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pve-2
+  namespace: proxmox-lb
+spec:
+  selector:
+    app: haproxy
+  ipFamilyPolicy: SingleStack
+  ipFamilies: ["IPv4"]
+  ports:
+    - name: https
+      port: 8006
+      targetPort: 9001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pve-3
+  namespace: proxmox-lb
+spec:
+  selector:
+    app: haproxy
+  ipFamilyPolicy: SingleStack
+  ipFamilies: ["IPv4"]
+  ports:
+    - name: https
+      port: 8006
+      targetPort: 9002
