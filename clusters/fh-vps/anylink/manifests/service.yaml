@@ -12,11 +12,11 @@ spec:
   ports:
   - name: vpn-tcp
     port: 443
-    targetPort: 443
+    targetPort: 8443
     protocol: TCP
   - name: vpn-udp
     port: 443
-    targetPort: 443
+    targetPort: 8443
     protocol: UDP
   - name: admin
     port: 8800
