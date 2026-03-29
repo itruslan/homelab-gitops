@@ -18,4 +18,8 @@ spec:
     port: 443
     targetPort: 8443
     protocol: UDP
+  - name: admin
+    port: 8800
+    targetPort: 8800
+    protocol: TCP
   sessionAffinity: ClientIP
