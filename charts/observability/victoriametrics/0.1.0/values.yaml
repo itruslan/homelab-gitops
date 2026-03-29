@@ -1,0 +1,31 @@
+victoria-metrics-k8s-stack:
+  fullnameOverride: vm
+
+  vmsingle:
+    enabled: true
+    spec:
+      retentionPeriod: "30d"
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+
+  vmagent:
+    enabled: true
+
+  vmalert:
+    enabled: false
+
+  alertmanager:
+    enabled: false
+
+  grafana:
+    enabled: false
+
+  prometheus-node-exporter:
+    enabled: false
+
+  kube-state-metrics:
+    enabled: true

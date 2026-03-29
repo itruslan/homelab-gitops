@@ -1,0 +1,7 @@
+apiVersion: v2
+name: proxmox-csi
+version: 0.1.0
+dependencies:
+  - name: proxmox-csi-plugin
+    repository: oci://ghcr.io/sergelogvinov/charts
+    version: 0.5.5

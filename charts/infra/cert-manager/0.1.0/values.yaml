@@ -1,0 +1,11 @@
+cert-manager:
+  crds:
+    enabled: true
+  global:
+    leaderElection:
+      namespace: cert-manager
+
+clusterIssuer:
+  email: admin@itruslan.ru
+  server: https://acme-v02.api.letsencrypt.org/directory
+  cloudflareTokenSecretName: cloudflare-token

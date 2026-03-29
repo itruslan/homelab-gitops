@@ -1,0 +1,55 @@
+grafana:
+  fullnameOverride: grafana
+
+  admin:
+    existingSecret: grafana-admin
+    userKey: admin-user
+    passwordKey: admin-password
+
+  persistence:
+    enabled: true
+    size: 5Gi
+
+  grafana.ini:
+    server:
+      root_url: https://grafana.itruslan.ru
+    auth.generic_oauth:
+      enabled: true
+      name: Authentik
+      icon: signin
+      client_id: $__env{GF_AUTH_GENERIC_OAUTH_CLIENT_ID}
+      client_secret: $__env{GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
+      scopes: openid email profile
+      auth_url: https://auth.itruslan.ru/application/o/authorize/
+      token_url: https://auth.itruslan.ru/application/o/token/
+      api_url: https://auth.itruslan.ru/application/o/userinfo/
+      role_attribute_path: preferred_username == 'itruslan' && 'Admin' || 'Viewer'
+      allow_sign_up: true
+
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: VictoriaMetrics
+          type: prometheus
+          url: http://vmsingle-vm.monitoring.svc:8428
+          access: proxy
+          isDefault: true
+        - name: Loki
+          type: loki
+          url: http://loki.monitoring.svc:3100
+          access: proxy
+
+  envFromSecret: grafana-oidc
+
+  defaultDashboardsEnabled: true
+  sidecar:
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      labelValue: "1"
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL

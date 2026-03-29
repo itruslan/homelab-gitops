@@ -1,0 +1,15 @@
+prometheus-blackbox-exporter:
+  fullnameOverride: blackbox-exporter
+
+  config:
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 10s
+        http:
+          valid_status_codes: [200, 201, 204, 301, 302, 401, 403]
+          preferred_ip_protocol: ip4
+          follow_redirects: true
+      tcp_connect:
+        prober: tcp
+        timeout: 10s

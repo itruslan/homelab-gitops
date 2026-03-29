@@ -1,0 +1,5 @@
+external-dns:
+  policy: sync
+  sources:
+    - gateway-httproute
+    - service

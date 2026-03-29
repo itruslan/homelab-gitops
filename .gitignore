@@ -3,4 +3,3 @@ charts/**/charts/
 Chart.lock
 render.yaml
 **/*.example
-charts/

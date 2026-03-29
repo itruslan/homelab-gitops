@@ -1,0 +1,15 @@
+alloy:
+  alloy:
+    configMap:
+      # Переопределяется в {cluster}/values.yaml — задай zone и targets под каждый кластер
+      content: ""
+
+  controller:
+    type: deployment
+    replicas: 1
+
+  rbac:
+    create: true
+
+  serviceAccount:
+    create: true
