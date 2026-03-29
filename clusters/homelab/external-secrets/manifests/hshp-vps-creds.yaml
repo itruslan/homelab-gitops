@@ -19,7 +19,13 @@ spec:
     remoteRef:
       key: homelab/clusters/hshp-vps
       property: bearerToken
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
   - secretKey: caData
     remoteRef:
       key: homelab/clusters/hshp-vps
       property: caData
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None

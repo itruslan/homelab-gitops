@@ -53,9 +53,9 @@ spec:
           - name: auther-0
             auths:
             - username: itruslan
-              password: '{{ "{{" }} .itruslan_password {{ "}}" }}'
+              password: '{{ .itruslan_password }}'
             - username: petrov_ad
-              password: '{{ "{{" }} .petrov_ad_password {{ "}}" }}'
+              password: '{{ .petrov_ad_password }}'
           log:
             output: stderr
             level: info
@@ -65,7 +65,13 @@ spec:
     remoteRef:
       key: homelab/gost/fh-vps-authers
       property: itruslan_password
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
   - secretKey: petrov_ad_password
     remoteRef:
       key: homelab/gost/fh-vps-authers
       property: petrov_ad_password
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
