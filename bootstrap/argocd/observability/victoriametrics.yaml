@@ -36,6 +36,11 @@ spec:
       destination:
         name: '{{.name}}'
         namespace: monitoring
+      ignoreDifferences:
+      - kind: ConfigMap
+        name: vm-node-exporter-full
+        jsonPointers:
+        - /data
       syncPolicy:
         automated:
           prune: true
