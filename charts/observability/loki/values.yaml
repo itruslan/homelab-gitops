@@ -53,3 +53,9 @@ loki:
 
   test:
     enabled: false
+
+  # Disable memcached caches (not needed for single-binary homelab)
+  chunksCache:
+    enabled: false
+  resultsCache:
+    enabled: false
