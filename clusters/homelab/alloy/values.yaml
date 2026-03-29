@@ -49,16 +49,14 @@ alloy:
           forward_to = [loki.write.default.receiver]
         }
 
-        // Blackbox probing
-        // Добавляй сюда сервисы: {"__address__" = "https://...", "service" = "name", "port" = "443", "__param_module" = "http_2xx"}
-        // Для TCP: {"__address__" = "host:port", "service" = "name", "port" = "5432", "__param_module" = "tcp_connect"}
-        discovery.relabel "blackbox_targets" {
+        // Blackbox probing — все зоны скрейпятся отсюда
+        // homelab зона
+        discovery.relabel "blackbox_homelab" {
           targets = [
-            {"__address__" = "https://grafana.itruslan.ru",    "service" = "grafana",       "port" = "443",  "__param_module" = "http_2xx"},
-            {"__address__" = "https://auth.itruslan.ru",       "service" = "authentik",     "port" = "443",  "__param_module" = "http_2xx"},
-            {"__address__" = "https://argocd.itruslan.ru",     "service" = "argocd",        "port" = "443",  "__param_module" = "http_2xx"},
+            {"__address__" = "https://grafana.itruslan.ru",  "service" = "grafana",   "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://auth.itruslan.ru",     "service" = "authentik", "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://argocd.itruslan.ru",   "service" = "argocd",    "port" = "443", "__param_module" = "http_2xx"},
           ]
-
           rule {
             source_labels = ["__address__"]
             target_label  = "__param_target"
@@ -73,9 +71,66 @@ alloy:
           }
         }
 
-        prometheus.scrape "blackbox" {
-          targets      = discovery.relabel.blackbox_targets.output
+        prometheus.scrape "blackbox_homelab" {
+          targets      = discovery.relabel.blackbox_homelab.output
           metrics_path = "/probe"
+          job_name     = "blackbox"
+          forward_to   = [prometheus.remote_write.vm.receiver]
+        }
+
+        // fh-vps зона — scrape удалённого blackbox через NodePort
+        discovery.relabel "blackbox_fh_vps" {
+          targets = [
+            {"__address__" = "https://grafana.itruslan.ru",  "service" = "grafana",   "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://auth.itruslan.ru",     "service" = "authentik", "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://argocd.itruslan.ru",   "service" = "argocd",    "port" = "443", "__param_module" = "http_2xx"},
+          ]
+          rule {
+            source_labels = ["__address__"]
+            target_label  = "__param_target"
+          }
+          rule {
+            target_label = "__address__"
+            replacement  = "191.96.94.9:30115"
+          }
+          rule {
+            target_label = "zone"
+            replacement  = "fh-vps"
+          }
+        }
+
+        prometheus.scrape "blackbox_fh_vps" {
+          targets      = discovery.relabel.blackbox_fh_vps.output
+          metrics_path = "/probe"
+          job_name     = "blackbox"
+          forward_to   = [prometheus.remote_write.vm.receiver]
+        }
+
+        // hshp-vps зона — scrape удалённого blackbox через NodePort
+        discovery.relabel "blackbox_hshp_vps" {
+          targets = [
+            {"__address__" = "https://grafana.itruslan.ru",  "service" = "grafana",   "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://auth.itruslan.ru",     "service" = "authentik", "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://argocd.itruslan.ru",   "service" = "argocd",    "port" = "443", "__param_module" = "http_2xx"},
+          ]
+          rule {
+            source_labels = ["__address__"]
+            target_label  = "__param_target"
+          }
+          rule {
+            target_label = "__address__"
+            replacement  = "193.37.70.242:30115"
+          }
+          rule {
+            target_label = "zone"
+            replacement  = "hshp-vps"
+          }
+        }
+
+        prometheus.scrape "blackbox_hshp_vps" {
+          targets      = discovery.relabel.blackbox_hshp_vps.output
+          metrics_path = "/probe"
+          job_name     = "blackbox"
           forward_to   = [prometheus.remote_write.vm.receiver]
         }
 
