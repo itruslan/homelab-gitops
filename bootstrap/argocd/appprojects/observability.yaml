@@ -4,12 +4,12 @@ metadata:
   name: observability
   namespace: argocd
 spec:
-  description: Observability components
+  description: Observability stack
   sourceRepos:
-  - https://github.com/itruslan/homelab-gitops.git
+  - '*'
   destinations:
   - namespace: '*'
-    server: '*'
+    server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'

@@ -4,12 +4,16 @@ metadata:
   name: infra
   namespace: argocd
 spec:
-  description: Infrastructure components
+  description: Infrastructure applications
   sourceRepos:
-  - https://github.com/itruslan/homelab-gitops.git
+  - '*'
   destinations:
   - namespace: '*'
-    server: '*'
+    server: https://kubernetes.default.svc
+  - namespace: '*'
+    name: fh-vps
+  - namespace: '*'
+    name: hshp-vps
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
