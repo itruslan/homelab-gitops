@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: anylink
-  namespace: {{ .Release.Namespace }}
+  namespace: anylink
 spec:
   replicas: 1
   strategy:
@@ -14,15 +14,13 @@ spec:
     metadata:
       labels:
         app: anylink
-      annotations:
-        checksum/config: {{ .Values.config | toYaml | sha256sum }}
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: anylink
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: cherts/anylink:0.13.1
+        imagePullPolicy: IfNotPresent
         args:
         - --conf=/app/conf/server.toml
         securityContext:
@@ -45,8 +43,7 @@ spec:
           mountPath: /app/ssl
         - name: data
           mountPath: /app/db
-        resources:
-          {{- toYaml .Values.resources | nindent 10 }}
+        resources: {}
       volumes:
       - name: config
         configMap:

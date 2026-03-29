@@ -21,13 +21,13 @@ spec:
       sources:
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
-        path: charts/infra/cilium/0.1.0
+        path: charts/infra/cilium
         helm:
           releaseName: cilium
           ignoreMissingValueFiles: true
           valueFiles:
           - values.yaml
-          - ../../../../clusters/{{.name}}/cilium/values.yaml
+          - ../../../clusters/{{.name}}/cilium/values.yaml
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
         path: clusters/{{.name}}/cilium/manifests

@@ -2,54 +2,54 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: anylink-conf
-  namespace: {{ .Release.Namespace }}
+  namespace: anylink
 data:
   server.toml: |
     db_type = "sqlite3"
-    db_source = "{{ .Values.config.dbSource }}"
+    db_source = "/app/db/anylink.db"
 
     cert_file = "/app/ssl/tls.crt"
     cert_key = "/app/ssl/tls.key"
 
-    files_path = "{{ .Values.config.filesPath }}"
-    profile = "{{ .Values.config.profile }}"
-    profile_name = "{{ .Values.config.profileName }}"
+    files_path = "/app/conf/files"
+    profile = "/app/conf/profile.xml"
+    profile_name = "anylink"
 
     log_level = "info"
     http_server_log = "true"
     pprof = false
 
-    issuer = "{{ .Values.config.issuer }}"
-    admin_user = "{{ .Values.config.adminUser }}"
+    issuer = "Cheburnet Industries"
+    admin_user = "admin"
     admin_pass = "placeholder"
     admin_otp = ""
     jwt_secret = "placeholder"
 
-    server_addr = "{{ .Values.config.serverAddr }}"
+    server_addr = ":8443"
     server_dtls = false
-    server_dtls_addr = "{{ .Values.config.serverAddr }}"
-    admin_addr = "{{ .Values.config.adminAddr }}"
+    server_dtls_addr = ":8443"
+    admin_addr = ":8800"
     proxy_protocol = false
 
-    link_mode = "{{ .Values.config.linkMode }}"
-    ipv4_master = "{{ .Values.config.ipv4Master }}"
-    ipv4_cidr = "{{ .Values.config.ipv4Cidr }}"
-    ipv4_gateway = "{{ .Values.config.ipv4Gateway }}"
-    ipv4_start = "{{ .Values.config.ipv4Start }}"
-    ipv4_end = "{{ .Values.config.ipv4End }}"
+    link_mode = "tun"
+    ipv4_master = "ens3"
+    ipv4_cidr = "10.21.99.0/24"
+    ipv4_gateway = "10.21.99.1"
+    ipv4_start = "10.21.99.100"
+    ipv4_end = "10.21.99.200"
 
-    max_client = {{ .Values.config.maxClient }}
-    max_user_client = {{ .Values.config.maxUserClient }}
+    max_client = 20
+    max_user_client = 3
     ip_lease = 86400
-    default_group = "{{ .Values.config.defaultGroup | default "all" }}"
+    default_group = "all"
 
     cstp_keepalive = 3
     cstp_dpd = 20
     mobile_keepalive = 4
     mobile_dpd = 60
 
-    mtu = {{ .Values.config.mtu }}
-    default_domain = "{{ .Values.config.defaultDomain }}"
+    mtu = 1460
+    default_domain = "fh-vps.itruslan.ru"
 
     idle_timeout = 0
     session_timeout = 3600

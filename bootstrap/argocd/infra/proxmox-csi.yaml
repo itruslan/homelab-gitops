@@ -21,13 +21,13 @@ spec:
       sources:
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
-        path: charts/infra/proxmox-csi/0.1.0
+        path: charts/infra/proxmox-csi
         helm:
           releaseName: proxmox-csi
           ignoreMissingValueFiles: true
           valueFiles:
           - values.yaml
-          - ../../../../clusters/{{.name}}/proxmox-csi/values.yaml
+          - ../../../clusters/{{.name}}/proxmox-csi/values.yaml
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
         path: clusters/{{.name}}/proxmox-csi/manifests

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gost
-  namespace: {{ .Release.Namespace }}
+  namespace: gost
 spec:
   replicas: 1
   selector:
@@ -12,13 +12,11 @@ spec:
     metadata:
       labels:
         app: gost
-      annotations:
-        checksum/config: {{ .Values.config | toYaml | sha256sum }}
     spec:
       containers:
       - name: gost
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: gogost/gost:3
+        imagePullPolicy: IfNotPresent
         args:
         - -C
         - /etc/gost/gost.yml
@@ -26,19 +24,14 @@ spec:
         - name: config
           mountPath: /etc/gost
           readOnly: true
-        {{- if .Values.tls.enabled }}
         - name: tls
           mountPath: /etc/gost/tls
           readOnly: true
-        {{- end }}
-        resources:
-          {{- toYaml .Values.resources | nindent 10 }}
+        resources: {}
       volumes:
       - name: config
         secret:
           secretName: gost-config
-      {{- if .Values.tls.enabled }}
       - name: tls
         secret:
           secretName: gost-tls
-      {{- end }}

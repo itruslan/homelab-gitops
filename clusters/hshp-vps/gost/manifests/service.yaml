@@ -1,22 +1,28 @@
-{{- if .Values.service.ports }}
 apiVersion: v1
 kind: Service
 metadata:
   name: gost
-  namespace: {{ .Release.Namespace }}
-  {{- if .Values.tls.domains }}
+  namespace: gost
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.tls.domains | join "," }}
-  {{- end }}
+    external-dns.alpha.kubernetes.io/hostname: hshp-vps.itruslan.ru
 spec:
-  type: {{ .Values.service.type }}
+  type: LoadBalancer
   selector:
     app: gost
   ports:
-  {{- range .Values.service.ports }}
-  - name: {{ .name }}
-    port: {{ .port }}
-    targetPort: {{ .port }}
-    protocol: {{ .protocol | default "TCP" }}
-  {{- end }}
-{{- end }}
+  - name: http-proxy
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  - name: http-proxy-tls
+    port: 8443
+    targetPort: 8443
+    protocol: TCP
+  - name: socks5-proxy
+    port: 1080
+    targetPort: 1080
+    protocol: TCP
+  - name: socks5-proxy-tls
+    port: 1443
+    targetPort: 1443
+    protocol: TCP

@@ -21,13 +21,13 @@ spec:
       sources:
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
-        path: charts/observability/loki/0.1.0
+        path: charts/observability/loki
         helm:
           releaseName: loki
           ignoreMissingValueFiles: true
           valueFiles:
           - values.yaml
-          - ../../../../clusters/{{.name}}/loki/values.yaml
+          - ../../../clusters/{{.name}}/loki/values.yaml
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
         path: clusters/{{.name}}/loki/manifests

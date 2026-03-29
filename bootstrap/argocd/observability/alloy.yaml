@@ -21,13 +21,13 @@ spec:
       sources:
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
-        path: charts/observability/alloy/0.1.0
+        path: charts/observability/alloy
         helm:
           releaseName: alloy
           ignoreMissingValueFiles: true
           valueFiles:
           - values.yaml
-          - ../../../../clusters/{{.name}}/alloy/values.yaml
+          - ../../../clusters/{{.name}}/alloy/values.yaml
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
         path: clusters/{{.name}}/alloy/manifests
