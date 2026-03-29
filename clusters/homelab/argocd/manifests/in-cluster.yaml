@@ -6,6 +6,7 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: cluster
     deploy_alloy: "true"
+    deploy_anylink: "true"
     deploy_argocd: "true"
     deploy_authentik: "true"
     deploy_blackbox: "true"
