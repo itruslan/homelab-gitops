@@ -1,16 +1,12 @@
-{{- if .Values.tls.enabled }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: gost-tls
-  namespace: {{ .Release.Namespace }}
+  namespace: gost
 spec:
   secretName: gost-tls
   issuerRef:
-    name: {{ .Values.tls.issuer }}
+    name: letsencrypt
     kind: ClusterIssuer
   dnsNames:
-  {{- range .Values.tls.domains }}
-  - {{ . }}
-  {{- end }}
-{{- end }}
+  - hshp-vps.itruslan.ru

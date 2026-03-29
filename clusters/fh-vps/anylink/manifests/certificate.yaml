@@ -1,17 +1,13 @@
-{{- if .Values.tls.enabled }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: anylink-tls
-  namespace: {{ .Release.Namespace }}
+  namespace: anylink
 spec:
   secretName: anylink-tls
   issuerRef:
-    name: {{ .Values.tls.issuer }}
+    name: letsencrypt
     kind: ClusterIssuer
   dnsNames:
-  - {{ .Values.tls.domain }}
-  {{- range .Values.tls.extraDomains }}
-  - {{ . }}
-  {{- end }}
-{{- end }}
+  - fh-vps.itruslan.ru
+  - anylink.fh.itruslan.ru
