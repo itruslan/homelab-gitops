@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: alloy
+  name: blackbox
   namespace: argocd
 spec:
   goTemplate: true
@@ -10,27 +10,27 @@ spec:
   - clusters:
       selector:
         matchExpressions:
-        - key: deploy_alloy
+        - key: deploy_blackbox
           operator: In
           values: ['true']
   template:
     metadata:
-      name: '{{.name}}-alloy'
+      name: '{{.name}}-blackbox'
     spec:
-      project: infra
+      project: observability
       sources:
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
-        path: charts/infra/alloy/0.1.0
+        path: charts/observability/blackbox/0.1.0
         helm:
-          releaseName: alloy
+          releaseName: blackbox
           ignoreMissingValueFiles: true
           valueFiles:
           - values.yaml
-          - ../../../../clusters/{{.name}}/alloy/values.yaml
+          - ../../../../clusters/{{.name}}/blackbox/values.yaml
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
-        path: clusters/{{.name}}/alloy/manifests
+        path: clusters/{{.name}}/blackbox/manifests
         directory:
           recurse: true
       destination:

@@ -10,6 +10,10 @@ spec:
   destinations:
   - namespace: '*'
     server: https://kubernetes.default.svc
+  - namespace: '*'
+    name: fh-vps
+  - namespace: '*'
+    name: hshp-vps
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
