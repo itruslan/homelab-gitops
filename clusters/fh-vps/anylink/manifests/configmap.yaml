@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: anylink-conf
+  namespace: {{ .Release.Namespace }}
+data:
+  server.toml: |
+    db_type = "sqlite3"
+    db_source = "{{ .Values.config.dbSource }}"
+
+    cert_file = "/app/ssl/tls.crt"
+    cert_key = "/app/ssl/tls.key"
+
+    files_path = "{{ .Values.config.filesPath }}"
+    profile = "{{ .Values.config.profile }}"
+    profile_name = "{{ .Values.config.profileName }}"
+
+    log_level = "info"
+    http_server_log = "true"
+    pprof = false
+
+    issuer = "{{ .Values.config.issuer }}"
+    admin_user = "{{ .Values.config.adminUser }}"
+    admin_pass = "placeholder"
+    admin_otp = ""
+    jwt_secret = "placeholder"
+
+    server_addr = "{{ .Values.config.serverAddr }}"
+    server_dtls = false
+    server_dtls_addr = "{{ .Values.config.serverAddr }}"
+    admin_addr = "{{ .Values.config.adminAddr }}"
+    proxy_protocol = false
+
+    link_mode = "{{ .Values.config.linkMode }}"
+    ipv4_master = "{{ .Values.config.ipv4Master }}"
+    ipv4_cidr = "{{ .Values.config.ipv4Cidr }}"
+    ipv4_gateway = "{{ .Values.config.ipv4Gateway }}"
+    ipv4_start = "{{ .Values.config.ipv4Start }}"
+    ipv4_end = "{{ .Values.config.ipv4End }}"
+
+    max_client = {{ .Values.config.maxClient }}
+    max_user_client = {{ .Values.config.maxUserClient }}
+    ip_lease = 86400
+    default_group = "{{ .Values.config.defaultGroup | default "all" }}"
+
+    cstp_keepalive = 3
+    cstp_dpd = 20
+    mobile_keepalive = 4
+    mobile_dpd = 60
+
+    mtu = {{ .Values.config.mtu }}
+    default_domain = "{{ .Values.config.defaultDomain }}"
+
+    idle_timeout = 0
+    session_timeout = 3600
+    audit_interval = -1
+
+    show_sql = false
+    iptables_nat = true
+    compression = false
+    no_compress_limit = 256
+    display_error = true
+    exclude_export_ip = true

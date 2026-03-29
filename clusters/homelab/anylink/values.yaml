@@ -1,0 +1,17 @@
+application:
+  applicationName: anylink
+
+  deployment:
+    annotations:
+      configmap.reloader.stakater.com/reload: "anylink-conf"
+
+    volumes:
+      anylink-ssl:
+        secret:
+          secretName: wildcard-itruslan-ru-tls
+      anylink-db:
+        persistentVolumeClaim:
+          claimName: anylink-data
+
+  persistence:
+    storageClass: proxmox-data

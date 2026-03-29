@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: grafana
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_grafana
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-grafana'
+    spec:
+      project: observability
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: charts/observability/grafana/0.1.0
+        helm:
+          releaseName: grafana
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../../clusters/{{.name}}/grafana/values.yaml
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/grafana/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: monitoring
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

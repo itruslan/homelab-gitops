@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: metallb
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_metallb
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-metallb'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: charts/infra/metallb/0.1.0
+        helm:
+          releaseName: metallb
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../../clusters/{{.name}}/metallb/values.yaml
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/metallb/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: kube-system
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

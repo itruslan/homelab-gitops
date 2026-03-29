@@ -1,0 +1,12 @@
+victoria-metrics-k8s-stack:
+  vmagent:
+    spec:
+      externalLabels:
+        cluster: homelab
+
+  vmsingle:
+    spec:
+      storage:
+        resources:
+          requests:
+            storage: 20Gi

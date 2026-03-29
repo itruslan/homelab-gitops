@@ -1,0 +1,41 @@
+alloy:
+  alloy:
+    configMap:
+      content: |
+        // Blackbox probing от fh-vps зоны
+        // Добавляй сюда сервисы доступные из этой зоны:
+        // {"__address__" = "https://...", "service" = "name", "port" = "443", "__param_module" = "http_2xx"}
+        discovery.relabel "blackbox_targets" {
+          targets = [
+            {"__address__" = "https://grafana.itruslan.ru",  "service" = "grafana",   "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://auth.itruslan.ru",     "service" = "authentik", "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://argocd.itruslan.ru",   "service" = "argocd",    "port" = "443", "__param_module" = "http_2xx"},
+          ]
+
+          rule {
+            source_labels = ["__address__"]
+            target_label  = "__param_target"
+          }
+          rule {
+            target_label = "__address__"
+            replacement  = "blackbox-exporter.monitoring.svc:9115"
+          }
+          rule {
+            target_label = "zone"
+            replacement  = "fh-vps"
+          }
+        }
+
+        prometheus.scrape "blackbox" {
+          targets      = discovery.relabel.blackbox_targets.output
+          metrics_path = "/probe"
+          forward_to   = [prometheus.remote_write.vm.receiver]
+        }
+
+        // Remote write в homelab VictoriaMetrics
+        // TODO: создать HTTPRoute для victoriametrics в homelab-gitops или использовать gost
+        prometheus.remote_write "vm" {
+          endpoint {
+            url = "https://victoriametrics.itruslan.ru/api/v1/write"
+          }
+        }

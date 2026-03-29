@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_argocd
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-argocd'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/argocd/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

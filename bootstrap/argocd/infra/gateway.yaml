@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gateway
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_gateway
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-gateway'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/gateway/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: gateway
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

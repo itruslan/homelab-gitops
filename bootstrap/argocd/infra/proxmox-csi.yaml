@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: proxmox-csi
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_proxmox_csi
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-proxmox-csi'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: charts/infra/proxmox-csi/0.1.0
+        helm:
+          releaseName: proxmox-csi
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../../clusters/{{.name}}/proxmox-csi/values.yaml
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/proxmox-csi/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: proxmox-csi-plugin
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

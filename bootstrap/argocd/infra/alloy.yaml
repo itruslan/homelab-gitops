@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: alloy
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_alloy
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-alloy'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: charts/infra/alloy/0.1.0
+        helm:
+          releaseName: alloy
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../../clusters/{{.name}}/alloy/values.yaml
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/alloy/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: monitoring
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

@@ -1,0 +1,4 @@
+authentik:
+  authentik:
+    postgresql:
+      host: authentik-pg-rw

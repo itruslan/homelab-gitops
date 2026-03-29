@@ -1,0 +1,96 @@
+alloy:
+  alloy:
+    configMap:
+      content: |
+        // Node metrics
+        prometheus.exporter.unix "nodes" {}
+
+        prometheus.scrape "nodes" {
+          targets    = prometheus.exporter.unix.nodes.targets
+          forward_to = [prometheus.remote_write.vm.receiver]
+        }
+
+        // kube-state-metrics scrape
+        prometheus.scrape "kube_state_metrics" {
+          targets = [{
+            __address__ = "vm-kube-state-metrics.monitoring.svc:8080",
+          }]
+          forward_to = [prometheus.remote_write.vm.receiver]
+        }
+
+        // Kubernetes pod logs
+        discovery.kubernetes "pods" {
+          role = "pod"
+        }
+
+        discovery.relabel "pods" {
+          targets = discovery.kubernetes.pods.targets
+
+          rule {
+            source_labels = ["__meta_kubernetes_namespace"]
+            target_label  = "namespace"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_name"]
+            target_label  = "pod"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_container_name"]
+            target_label  = "container"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_node_name"]
+            target_label  = "node"
+          }
+        }
+
+        loki.source.kubernetes "pods" {
+          targets    = discovery.relabel.pods.output
+          forward_to = [loki.write.default.receiver]
+        }
+
+        // Blackbox probing
+        // Добавляй сюда сервисы: {"__address__" = "https://...", "service" = "name", "port" = "443", "__param_module" = "http_2xx"}
+        // Для TCP: {"__address__" = "host:port", "service" = "name", "port" = "5432", "__param_module" = "tcp_connect"}
+        discovery.relabel "blackbox_targets" {
+          targets = [
+            {"__address__" = "https://grafana.itruslan.ru",    "service" = "grafana",       "port" = "443",  "__param_module" = "http_2xx"},
+            {"__address__" = "https://auth.itruslan.ru",       "service" = "authentik",     "port" = "443",  "__param_module" = "http_2xx"},
+            {"__address__" = "https://argocd.itruslan.ru",     "service" = "argocd",        "port" = "443",  "__param_module" = "http_2xx"},
+          ]
+
+          rule {
+            source_labels = ["__address__"]
+            target_label  = "__param_target"
+          }
+          rule {
+            target_label = "__address__"
+            replacement  = "blackbox-exporter.monitoring.svc:9115"
+          }
+          rule {
+            target_label = "zone"
+            replacement  = "homelab"
+          }
+        }
+
+        prometheus.scrape "blackbox" {
+          targets      = discovery.relabel.blackbox_targets.output
+          metrics_path = "/probe"
+          forward_to   = [prometheus.remote_write.vm.receiver]
+        }
+
+        // Remote write
+        prometheus.remote_write "vm" {
+          endpoint {
+            url = "http://vmsingle-vm.monitoring.svc:8428/api/v1/write"
+          }
+        }
+
+        loki.write "default" {
+          endpoint {
+            url = "http://loki.monitoring.svc:3100/loki/api/v1/push"
+          }
+        }
+
+  controller:
+    type: daemonset

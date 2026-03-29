@@ -1,0 +1,14 @@
+tls:
+  enabled: true
+  issuer: letsencrypt
+  domain: fh-vps.itruslan.ru
+  extraDomains:
+  - anylink.fh.itruslan.ru
+
+config:
+  ipv4Master: ens3
+  ipv4Cidr: "10.21.99.0/24"
+  ipv4Gateway: "10.21.99.1"
+  ipv4Start: "10.21.99.100"
+  ipv4End: "10.21.99.200"
+  defaultDomain: fh-vps.itruslan.ru

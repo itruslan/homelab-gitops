@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: blackbox
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_blackbox
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-blackbox'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: charts/infra/blackbox/0.1.0
+        helm:
+          releaseName: blackbox
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../../clusters/{{.name}}/blackbox/values.yaml
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/blackbox/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: monitoring
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

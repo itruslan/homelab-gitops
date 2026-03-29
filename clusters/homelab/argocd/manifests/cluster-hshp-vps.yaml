@@ -1,0 +1,46 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: cluster-hshp-vps
+  namespace: argocd
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: cluster-hshp-vps
+    creationPolicy: Owner
+    template:
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: cluster
+          deploy_gost: "true"
+          deploy_cert_manager: "true"
+          deploy_external_dns: "true"
+          deploy_alloy: "true"
+          deploy_blackbox: "true"
+      data:
+        name: hshp-vps
+        server: '{{ "{{" }} .serverUrl {{ "}}" }}'
+        config: |
+          {
+            "bearerToken": "{{ "{{" }} .bearerToken {{ "}}" }}",
+            "tlsClientConfig": {
+              "insecure": false,
+              "caData": "{{ "{{" }} .caData {{ "}}" }}"
+            }
+          }
+  data:
+  - secretKey: bearerToken
+    remoteRef:
+      key: homelab/clusters/hshp-vps
+      property: bearerToken
+  - secretKey: caData
+    remoteRef:
+      key: homelab/clusters/hshp-vps
+      property: caData
+  - secretKey: serverUrl
+    remoteRef:
+      key: homelab/clusters/hshp-vps
+      property: serverUrl

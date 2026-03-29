@@ -1,0 +1,22 @@
+{{- if .Values.service.ports }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: gost
+  namespace: {{ .Release.Namespace }}
+  {{- if .Values.tls.domains }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.tls.domains | join "," }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: gost
+  ports:
+  {{- range .Values.service.ports }}
+  - name: {{ .name }}
+    port: {{ .port }}
+    targetPort: {{ .port }}
+    protocol: {{ .protocol | default "TCP" }}
+  {{- end }}
+{{- end }}
