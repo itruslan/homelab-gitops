@@ -23,13 +23,13 @@ spec:
           deploy_blackbox: "true"
       data:
         name: fh-vps
-        server: '{{ "{{" }} .serverUrl {{ "}}" }}'
+        server: '{{ .serverUrl }}'
         config: |
           {
-            "bearerToken": "{{ "{{" }} .bearerToken {{ "}}" }}",
+            "bearerToken": "{{ .bearerToken }}",
             "tlsClientConfig": {
               "insecure": false,
-              "caData": "{{ "{{" }} .caData {{ "}}" }}"
+              "caData": "{{ .caData }}"
             }
           }
   data:
