@@ -50,12 +50,26 @@ alloy:
         }
 
         // Blackbox probing — все зоны скрейпятся отсюда
-        // homelab зона
+        // homelab зона (blackbox в кластере) — смесь своих сервисов и публичных целей
         discovery.relabel "blackbox_homelab" {
           targets = [
-            {"__address__" = "https://grafana.itruslan.ru",  "service" = "grafana",   "port" = "443", "__param_module" = "http_2xx"},
-            {"__address__" = "https://auth.itruslan.ru",     "service" = "authentik", "port" = "443", "__param_module" = "http_2xx"},
-            {"__address__" = "https://argocd.itruslan.ru",   "service" = "argocd",    "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://grafana.itruslan.ru",     "service" = "grafana",          "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://auth.itruslan.ru",        "service" = "authentik",        "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://argocd.itruslan.ru",      "service" = "argocd",           "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.wikipedia.org",       "service" = "wikipedia",        "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.debian.org",          "service" = "debian",           "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.rust-lang.org",       "service" = "rust-lang",        "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.cloudflare.com",      "service" = "cloudflare-www",   "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://speed.cloudflare.com",    "service" = "cloudflare-speed", "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://registry.npmjs.org",      "service" = "npm-registry",     "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "1.1.1.1",                         "service" = "icmp-cloudflare",    "port" = "icmp", "__param_module" = "icmp"},
+            {"__address__" = "8.8.8.8",                         "service" = "icmp-google-dns",  "port" = "icmp", "__param_module" = "icmp"},
+            {"__address__" = "9.9.9.9",                         "service" = "icmp-quad9",       "port" = "icmp", "__param_module" = "icmp"},
+            {"__address__" = "github.com:443",                  "service" = "github-tcp",       "port" = "443", "__param_module" = "tcp_connect"},
+            {"__address__" = "8.8.8.8:53",                      "service" = "google-dns-tcp",   "port" = "53",  "__param_module" = "tcp_connect"},
+            {"__address__" = "1.1.1.1:53",                      "service" = "cf-dns-tcp-53",    "port" = "53",  "__param_module" = "tcp_connect"},
+            {"__address__" = "8.8.8.8:53",                      "service" = "dns-google-example", "port" = "53",  "__param_module" = "dns_udp"},
+            {"__address__" = "1.1.1.1:53",                      "service" = "dns-cf-example",   "port" = "53",  "__param_module" = "dns_udp"},
           ]
           rule {
             source_labels = ["__address__"]
@@ -78,12 +92,20 @@ alloy:
           forward_to   = [prometheus.remote_write.vm.receiver]
         }
 
-        // fh-vps зона — scrape удалённого blackbox через NodePort
+        // fh-vps зона — удалённый blackbox (другой хост пробы)
         discovery.relabel "blackbox_fh_vps" {
           targets = [
-            {"__address__" = "https://grafana.itruslan.ru",  "service" = "grafana",   "port" = "443", "__param_module" = "http_2xx"},
-            {"__address__" = "https://auth.itruslan.ru",     "service" = "authentik", "port" = "443", "__param_module" = "http_2xx"},
-            {"__address__" = "https://argocd.itruslan.ru",   "service" = "argocd",    "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://grafana.itruslan.ru",     "service" = "grafana-fh",       "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "anylink.fh.itruslan.ru:443",      "service" = "anylink-vpn",      "port" = "443", "__param_module" = "tcp_connect"},
+            {"__address__" = "https://api.github.com",          "service" = "github-api",       "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://pypi.org",                "service" = "pypi",             "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.iana.org",            "service" = "iana",             "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.eff.org",             "service" = "eff",              "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "1.0.0.1",                         "service" = "icmp-cf-secondary","port" = "icmp", "__param_module" = "icmp"},
+            {"__address__" = "208.67.222.222",                  "service" = "icmp-opendns",     "port" = "icmp", "__param_module" = "icmp"},
+            {"__address__" = "google.com:443",                  "service" = "google-www-tcp",   "port" = "443", "__param_module" = "tcp_connect"},
+            {"__address__" = "9.9.9.9:53",                      "service" = "quad9-dns-tcp",    "port" = "53",  "__param_module" = "tcp_connect"},
+            {"__address__" = "9.9.9.9:53",                      "service" = "dns-quad9-mozilla","port" = "53",  "__param_module" = "dns_mozilla"},
           ]
           rule {
             source_labels = ["__address__"]
@@ -106,12 +128,21 @@ alloy:
           forward_to   = [prometheus.remote_write.vm.receiver]
         }
 
-        // hshp-vps зона — scrape удалённого blackbox через NodePort
+        // hshp-vps зона — третий blackbox
         discovery.relabel "blackbox_hshp_vps" {
           targets = [
-            {"__address__" = "https://grafana.itruslan.ru",  "service" = "grafana",   "port" = "443", "__param_module" = "http_2xx"},
-            {"__address__" = "https://auth.itruslan.ru",     "service" = "authentik", "port" = "443", "__param_module" = "http_2xx"},
-            {"__address__" = "https://argocd.itruslan.ru",   "service" = "argocd",    "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://grafana.itruslan.ru",     "service" = "grafana-hshp",     "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.kernel.org",          "service" = "kernel-org",       "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://www.postgresql.org",      "service" = "postgresql-org",   "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://go.dev",                  "service" = "go-dev",           "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://kubernetes.io",           "service" = "kubernetes-io",    "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://prometheus.io",           "service" = "prometheus-io",    "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "https://letsencrypt.org",         "service" = "letsencrypt",      "port" = "443", "__param_module" = "http_2xx"},
+            {"__address__" = "149.112.112.112",                 "service" = "icmp-quad9-alt",   "port" = "icmp", "__param_module" = "icmp"},
+            {"__address__" = "64.6.64.6",                       "service" = "icmp-verisign",    "port" = "icmp", "__param_module" = "icmp"},
+            {"__address__" = "cloudflare.com:443",              "service" = "cf-root-tcp",      "port" = "443", "__param_module" = "tcp_connect"},
+            {"__address__" = "8.8.8.8:853",                     "service" = "google-dns-tls",   "port" = "853", "__param_module" = "tcp_connect"},
+            {"__address__" = "8.8.8.8:53",                      "service" = "dns-google-mozilla","port" = "53", "__param_module" = "dns_mozilla"},
           ]
           rule {
             source_labels = ["__address__"]
