@@ -18,8 +18,6 @@ spec:
           deploy_gost: "true"
           deploy_cert_manager: "true"
           deploy_external_dns: "true"
-          deploy_alloy: "true"
-          deploy_blackbox: "true"
       data:
         name: hshp-vps
         server: '{{ .serverUrl }}'
