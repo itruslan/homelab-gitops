@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-config
+  namespace: kvm-lb
+data:
+  haproxy.cfg: |
+    global
+      log stdout format raw local0
+      maxconn 4096
+
+    defaults
+      log global
+      mode tcp
+      option tcplog
+      option dontlognull
+      timeout connect 5s
+      timeout client 30s
+      timeout server 30s
+
+    frontend kvm_front
+      bind *:9000
+      default_backend kvm_back
+
+    backend kvm_back
+      server kvm 192.168.99.50:8006 ssl verify none
+
+    frontend kvm2_front
+      bind *:9001
+      default_backend kvm2_back
+
+    backend kvm2_back
+      server kvm2 192.168.99.50:8006 ssl verify none
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy
+  namespace: kvm-lb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy
+  template:
+    metadata:
+      labels:
+        app: haproxy
+    spec:
+      containers:
+        - name: haproxy
+          image: haproxy:lts-alpine
+          ports:
+            - containerPort: 9000
+            - containerPort: 9001
+          volumeMounts:
+            - name: config
+              mountPath: /usr/local/etc/haproxy/haproxy.cfg
+              subPath: haproxy.cfg
+      volumes:
+        - name: config
+          configMap:
+            name: haproxy-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kvm
+  namespace: kvm-lb
+spec:
+  selector:
+    app: haproxy
+  ports:
+    - name: https
+      port: 8006
+      targetPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kvm2
+  namespace: kvm-lb
+spec:
+  selector:
+    app: haproxy
+  ports:
+    - name: https
+      port: 8006
+      targetPort: 9001

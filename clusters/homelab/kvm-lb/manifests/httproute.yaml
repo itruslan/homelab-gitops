@@ -1,0 +1,75 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kvm-redirect
+  namespace: kvm-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - kvm.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kvm
+  namespace: kvm-lb
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: kvm.itruslan.ru
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - kvm.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: kvm
+      port: 8006
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kvm2-redirect
+  namespace: kvm-lb
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - kvm2.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kvm2
+  namespace: kvm-lb
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: kvm2.itruslan.ru
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - kvm2.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: kvm2
+      port: 8006
