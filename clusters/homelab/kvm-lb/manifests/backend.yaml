@@ -23,14 +23,14 @@ data:
       default_backend kvm_back
 
     backend kvm_back
-      server kvm 192.168.99.50:8006 ssl verify none
+      server kvm 192.168.99.7:80 check
 
     frontend kvm2_front
       bind *:9001
       default_backend kvm2_back
 
     backend kvm2_back
-      server kvm2 192.168.99.50:8006 ssl verify none
+      server kvm2 192.168.99.8:80 check
 ---
 apiVersion: apps/v1
 kind: Deployment
