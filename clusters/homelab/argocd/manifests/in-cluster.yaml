@@ -27,6 +27,7 @@ metadata:
     deploy_reloader: "true"
     deploy_vault: "true"
     deploy_victoriametrics: "true"
+    deploy_teleport: "true"
 stringData:
   name: homelab
   server: https://kubernetes.default.svc
