@@ -1,28 +1,29 @@
-chartMode: standalone
-proxyListenerMode: multiplex
+teleport-cluster:
+  chartMode: standalone
+  proxyListenerMode: multiplex
 
-persistence:
-  enabled: true
-  storageClassName: proxmox-data
-  size: 10Gi
+  persistence:
+    enabled: true
+    storageClassName: proxmox-data
+    size: 10Gi
 
-authentication:
-  type: local
-  secondFactors: ["otp", "webauthn"]
+  authentication:
+    type: local
+    secondFactors: ["otp", "webauthn"]
 
-acme: false
+  acme: false
 
-# TLS via existing wildcard cert (injected per cluster)
-tls:
-  existingSecretName: wildcard-itruslan-ru-tls
+  # TLS via existing wildcard cert (injected per cluster)
+  tls:
+    existingSecretName: wildcard-itruslan-ru-tls
 
-annotations:
-  service:
-    metallb.universe.tf/address-pool: homelab
+  annotations:
+    service:
+      metallb.universe.tf/address-pool: homelab
 
-auth:
-  teleportConfig:
-    windows_desktop_service:
-      enabled: yes
-      listen_addr: "0.0.0.0:3028"
-      static_hosts: []
+  auth:
+    teleportConfig:
+      windows_desktop_service:
+        enabled: yes
+        listen_addr: "0.0.0.0:3028"
+        static_hosts: []

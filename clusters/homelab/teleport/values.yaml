@@ -1,22 +1,23 @@
-clusterName: teleport.itruslan.ru
+teleport-cluster:
+  clusterName: teleport.itruslan.ru
 
-annotations:
-  service:
-    metallb.universe.tf/address-pool: homelab
-    external-dns.alpha.kubernetes.io/hostname: teleport.itruslan.ru
+  annotations:
+    service:
+      metallb.universe.tf/address-pool: homelab
+      external-dns.alpha.kubernetes.io/hostname: teleport.itruslan.ru
 
-auth:
-  teleportConfig:
-    windows_desktop_service:
-      enabled: yes
-      listen_addr: "0.0.0.0:3028"
-      static_hosts:
-        # Add your Windows machines here
-        # - name: my-windows-pc
-        #   addr: "192.168.1.100:3389"
-        #   labels:
-        #     env: homelab
-        - name: windows-11
-          addr: "192.168.99.100:3389"
-          labels:
-            env: homelab
+  auth:
+    teleportConfig:
+      windows_desktop_service:
+        enabled: yes
+        listen_addr: "0.0.0.0:3028"
+        static_hosts:
+          # Add your Windows machines here
+          # - name: my-windows-pc
+          #   addr: "192.168.1.100:3389"
+          #   labels:
+          #     env: homelab
+          - name: windows-11
+            addr: "192.168.99.100:3389"
+            labels:
+              env: homelab
