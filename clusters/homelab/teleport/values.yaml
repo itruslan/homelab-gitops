@@ -1,11 +1,10 @@
 teleport-cluster:
   clusterName: teleport.itruslan.ru
 
-  proxy:
-    annotations:
-      service:
-        metallb.universe.tf/address-pool: homelab
-        external-dns.alpha.kubernetes.io/hostname: teleport.itruslan.ru
+  annotations:
+    service:
+      metallb.universe.tf/address-pool: homelab
+      external-dns.alpha.kubernetes.io/hostname: teleport.itruslan.ru
 
   auth:
     teleportConfig:

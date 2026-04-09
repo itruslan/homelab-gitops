@@ -17,10 +17,9 @@ teleport-cluster:
   tls:
     existingSecretName: wildcard-itruslan-ru-tls
 
-  proxy:
-    annotations:
-      service:
-        metallb.universe.tf/address-pool: homelab
+  annotations:
+    service:
+      metallb.universe.tf/address-pool: homelab
 
   auth:
     teleportConfig:
