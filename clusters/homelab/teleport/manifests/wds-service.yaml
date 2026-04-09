@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: teleport-wds
+  namespace: teleport
+spec:
+  selector:
+    app.kubernetes.io/name: teleport-cluster
+    app.kubernetes.io/instance: teleport
+    app.kubernetes.io/component: auth
+  ports:
+  - name: desktop
+    port: 3028
+    targetPort: 3028
+    protocol: TCP
