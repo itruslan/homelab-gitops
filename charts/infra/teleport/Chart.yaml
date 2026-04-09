@@ -3,5 +3,5 @@ name: teleport
 version: 0.1.0
 dependencies:
   - name: teleport-cluster
-    repository: oci://public.ecr.aws/gravitational
+    repository: https://charts.releases.teleport.dev
     version: 18.4.1
