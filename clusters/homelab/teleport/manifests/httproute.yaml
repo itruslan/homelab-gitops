@@ -1,0 +1,13 @@
+# Teleport proxy is exposed via a LoadBalancer service (metallb) configured in values.yaml.
+# HTTPRoute is not used here — Teleport handles TLS termination itself.
+# Once Teleport is running, add windows hosts via tctl or TeleportWindowsDesktop CRs.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: teleport-info
+  namespace: teleport
+data:
+  info: |
+    Teleport cluster: teleport.itruslan.ru
+    Access: https://teleport.itruslan.ru
+    Windows Desktop: configured via auth.teleportConfig in values.yaml
