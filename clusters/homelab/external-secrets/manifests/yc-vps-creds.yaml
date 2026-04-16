@@ -17,14 +17,14 @@ spec:
   data:
   - secretKey: bearerToken
     remoteRef:
-      key: homelab/clusters/yc-compute
+      key: homelab/clusters/yc-vps
       property: bearerToken
       conversionStrategy: Default
       decodingStrategy: None
       metadataPolicy: None
   - secretKey: caData
     remoteRef:
-      key: homelab/clusters/yc-compute
+      key: homelab/clusters/yc-vps
       property: caData
       conversionStrategy: Default
       decodingStrategy: None
