@@ -13,7 +13,7 @@ spec:
   data:
   - secretKey: token
     remoteRef:
-      key: homelab/clusters/yc-compute
+      key: homelab/clusters/yc-vps
       property: cloudflareToken
       conversionStrategy: Default
       decodingStrategy: None
