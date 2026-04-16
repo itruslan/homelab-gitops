@@ -6,12 +6,11 @@ metadata:
   labels:
     app.kubernetes.io/name: xray
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - name: vless
-    port: 8443
+    port: 443
     targetPort: 8443
-    nodePort: 30443
     protocol: TCP
   selector:
     app: xray
