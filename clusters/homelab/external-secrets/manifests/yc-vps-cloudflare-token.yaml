@@ -1,0 +1,21 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: yc-vps-cloudflare-token
+  namespace: external-secrets
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: yc-vps-cloudflare-token
+  data:
+  - secretKey: token
+    remoteRef:
+      key: homelab/clusters/yc-compute
+      property: cloudflareToken
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
+

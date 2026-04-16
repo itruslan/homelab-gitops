@@ -1,0 +1,32 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: yc-vps-k8s-creds
+  namespace: external-secrets
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: yc-vps-k8s-creds
+    template:
+      data:
+        token: '{{ .bearerToken }}'
+        ca: '{{ .caData | b64dec }}'
+  data:
+  - secretKey: bearerToken
+    remoteRef:
+      key: homelab/clusters/yc-compute
+      property: bearerToken
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
+  - secretKey: caData
+    remoteRef:
+      key: homelab/clusters/yc-compute
+      property: caData
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
+
