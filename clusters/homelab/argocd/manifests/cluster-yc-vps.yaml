@@ -32,14 +32,14 @@ spec:
   data:
   - secretKey: bearerToken
     remoteRef:
-      key: homelab/clusters/yc-compute
+      key: homelab/clusters/yc-vps
       property: bearerToken
   - secretKey: caData
     remoteRef:
-      key: homelab/clusters/yc-compute
+      key: homelab/clusters/yc-vps
       property: caData
   - secretKey: serverUrl
     remoteRef:
-      key: homelab/clusters/yc-compute
+      key: homelab/clusters/yc-vps
       property: serverUrl
 
