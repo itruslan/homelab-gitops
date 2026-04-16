@@ -21,6 +21,7 @@ spec:
           deploy_anylink: "true"
           deploy_alloy: "true"
           deploy_blackbox: "true"
+          deploy_vless: "true"
       data:
         name: fh-vps
         server: '{{ .serverUrl }}'

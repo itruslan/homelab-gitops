@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xray
+  namespace: vless
+  labels:
+    app.kubernetes.io/name: xray
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xray
+  template:
+    metadata:
+      labels:
+        app: xray
+    spec:
+      containers:
+      - name: xray
+        image: ghcr.io/xtls/xray-core:26.3.27
+        imagePullPolicy: IfNotPresent
+        args:
+        - run
+        - -c
+        - /etc/xray/config.json
+        ports:
+        - name: vless
+          containerPort: 443
+          hostPort: 443
+          protocol: TCP
+        volumeMounts:
+        - name: config
+          mountPath: /etc/xray
+          readOnly: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+      volumes:
+      - name: config
+        secret:
+          secretName: vless-config
