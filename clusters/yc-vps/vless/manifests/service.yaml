@@ -5,14 +5,13 @@ metadata:
   namespace: vless
   labels:
     app.kubernetes.io/name: xray
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: vless-yc.itruslan.ru
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
   - name: vless
-    port: 443
+    port: 8443
     targetPort: 8443
+    nodePort: 30443
     protocol: TCP
   selector:
     app: xray
