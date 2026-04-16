@@ -25,7 +25,7 @@ spec:
         - /etc/xray/config.json
         ports:
         - name: vless
-          containerPort: 8443
+          containerPort: 443
           hostPort: 443
           protocol: TCP
         volumeMounts:
