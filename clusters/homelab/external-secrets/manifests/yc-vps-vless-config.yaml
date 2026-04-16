@@ -14,5 +14,5 @@ spec:
   data:
   - secretKey: config.json
     remoteRef:
-      key: homelab/vless/yc-vps
-      property: configJson
+      key: homelab/clusters/yc-vps
+      property: vlessConfigJson
