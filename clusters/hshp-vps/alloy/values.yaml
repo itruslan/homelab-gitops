@@ -1,6 +1,0 @@
-alloy:
-  alloy:
-    configMap:
-      content: |
-        // Blackbox scraping выполняется централизованно из homelab alloy
-        // Этот alloy оставлен как заглушка на случай будущих задач
