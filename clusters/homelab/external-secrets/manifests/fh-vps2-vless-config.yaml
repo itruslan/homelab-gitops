@@ -1,0 +1,26 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: fh-vps2-vless-config
+  namespace: external-secrets
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: fh-vps2-vless-config
+    creationPolicy: Owner
+  data:
+  - secretKey: config.json
+    remoteRef:
+      key: homelab/vless/fh-vps2
+      property: configJson
+  - secretKey: username
+    remoteRef:
+      key: homelab/vless/fh-vps2
+      property: username
+  - secretKey: password
+    remoteRef:
+      key: homelab/vless/fh-vps2
+      property: password

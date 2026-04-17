@@ -1,0 +1,22 @@
+application:
+  deployment:
+    ports:
+      - name: vless
+        containerPort: 443
+        hostPort: 9443
+        protocol: TCP
+      - name: ui
+        containerPort: 2053
+        hostPort: 2053
+        protocol: TCP
+
+  service:
+    ports:
+      - name: vless
+        port: 443
+        protocol: TCP
+        targetPort: 443
+      - name: ui
+        port: 2053
+        protocol: TCP
+        targetPort: 2053
