@@ -3,7 +3,7 @@ application:
     ports:
       - name: vless
         containerPort: 443
-        hostPort: 9443
+        hostPort: 443
         protocol: TCP
       - name: ui
         containerPort: 2053
