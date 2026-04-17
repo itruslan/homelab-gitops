@@ -7,6 +7,8 @@ metadata:
     app.kubernetes.io/name: xray
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: xray
@@ -17,21 +19,33 @@ spec:
     spec:
       containers:
       - name: xray
-        image: ghcr.io/xtls/xray-core:26.3.27
-        imagePullPolicy: IfNotPresent
-        args:
-        - run
-        - -c
-        - /etc/xray/config.json
+        image: ghcr.io/mhsanaei/3x-ui:latest
+        imagePullPolicy: Always
+        env:
+        - name: X_UI_USER
+          valueFrom:
+            secretKeyRef:
+              name: vless-config
+              key: username
+        - name: X_UI_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vless-config
+              key: password
+        - name: X_UI_PORT
+          value: "8443"
         ports:
         - name: vless
           containerPort: 443
           hostPort: 443
           protocol: TCP
+        - name: ui
+          containerPort: 8443
+          hostPort: 8443
+          protocol: TCP
         volumeMounts:
-        - name: config
-          mountPath: /etc/xray
-          readOnly: true
+        - name: data
+          mountPath: /etc/x-ui
         resources:
           requests:
             cpu: 50m
@@ -39,6 +53,6 @@ spec:
           limits:
             memory: 256Mi
       volumes:
-      - name: config
-        secret:
-          secretName: vless-config
+      - name: data
+        persistentVolumeClaim:
+          claimName: xray-data

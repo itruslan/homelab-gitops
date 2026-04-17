@@ -12,5 +12,9 @@ spec:
     port: 443
     targetPort: 443
     protocol: TCP
+  - name: ui
+    port: 8443
+    targetPort: 8443
+    protocol: TCP
   selector:
     app: xray
