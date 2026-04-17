@@ -21,6 +21,15 @@ spec:
       sources:
       - repoURL: https://github.com/itruslan/homelab-gitops.git
         targetRevision: HEAD
+        path: charts/infra/vless
+        helm:
+          releaseName: vless
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../clusters/{{.name}}/vless/values.yaml
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
         path: clusters/{{.name}}/vless/manifests
         directory:
           recurse: true

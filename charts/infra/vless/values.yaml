@@ -1,0 +1,65 @@
+application:
+  applicationName: vless
+
+  deployment:
+    strategy:
+      type: Recreate
+
+    image:
+      repository: ghcr.io/mhsanaei/3x-ui
+      tag: latest
+      pullPolicy: Always
+
+    env:
+      X_UI_PORT:
+        value: "8443"
+      X_UI_USER:
+        valueFrom:
+          secretKeyRef:
+            name: vless-config
+            key: username
+      X_UI_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: vless-config
+            key: password
+
+    ports:
+      - name: vless
+        containerPort: 443
+        hostPort: 443
+        protocol: TCP
+      - name: ui
+        containerPort: 8443
+        hostPort: 8443
+        protocol: TCP
+
+    volumes:
+      vless-data:
+        persistentVolumeClaim:
+          claimName: xray-data
+
+    volumeMounts:
+      vless-data:
+        mountPath: /etc/x-ui
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
+
+  service:
+    ports:
+      - name: vless
+        port: 443
+        protocol: TCP
+        targetPort: 443
+      - name: ui
+        port: 8443
+        protocol: TCP
+        targetPort: 8443
+
+  persistence:
+    enabled: false
