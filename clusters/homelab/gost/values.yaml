@@ -14,7 +14,7 @@ service:
   type: LoadBalancer
   hostname: gost.itruslan.ru
   httpPort: 8080
-  httpTlsPort: 8443
+  httpTlsPort: 7443
   socks5Port: 1080
   socks5TlsPort: 1443
 

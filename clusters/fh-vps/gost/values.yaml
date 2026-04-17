@@ -11,7 +11,7 @@ service:
     port: 8080
     protocol: TCP
   - name: http-proxy-tls
-    port: 8443
+    port: 7443
     protocol: TCP
   - name: socks5-proxy
     port: 1080
