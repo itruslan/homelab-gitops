@@ -11,8 +11,6 @@ application:
       pullPolicy: Always
 
     env:
-      X_UI_PORT:
-        value: "8443"
       X_UI_USER:
         valueFrom:
           secretKeyRef:
@@ -30,8 +28,8 @@ application:
         hostPort: 443
         protocol: TCP
       - name: ui
-        containerPort: 8443
-        hostPort: 8443
+        containerPort: 2053
+        hostPort: 2053
         protocol: TCP
 
     volumes:
@@ -61,9 +59,9 @@ application:
         protocol: TCP
         targetPort: 443
       - name: ui
-        port: 8443
+        port: 2053
         protocol: TCP
-        targetPort: 8443
+        targetPort: 2053
 
   persistence:
     enabled: false

@@ -1,16 +1,13 @@
 application:
   deployment:
-    env:
-      X_UI_PORT:
-        value: "2083"
     ports:
       - name: vless
         containerPort: 443
         hostPort: 443
         protocol: TCP
       - name: ui
-        containerPort: 2083
-        hostPort: 2083
+        containerPort: 2053
+        hostPort: 2053
         protocol: TCP
 
   service:
@@ -20,6 +17,6 @@ application:
         protocol: TCP
         targetPort: 443
       - name: ui
-        port: 2083
+        port: 2053
         protocol: TCP
-        targetPort: 2083
+        targetPort: 2053
