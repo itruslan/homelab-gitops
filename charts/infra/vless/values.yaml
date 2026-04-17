@@ -43,6 +43,10 @@ application:
       vless-data:
         mountPath: /etc/x-ui
 
+    containerSecurityContext:
+      runAsNonRoot: false
+      readOnlyRootFilesystem: false
+
     resources:
       requests:
         cpu: 50m
