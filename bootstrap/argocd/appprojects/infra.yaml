@@ -14,10 +14,6 @@ spec:
     name: fh-vps
   - namespace: '*'
     name: hshp-vps
-  - namespace: '*'
-    name: yc-vps
-  - namespace: '*'
-    name: fh-vps2
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
