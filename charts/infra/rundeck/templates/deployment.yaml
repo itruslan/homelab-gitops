@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: rundeck
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    reloader.stakater.com/auto: "true"
   labels:
     app.kubernetes.io/name: rundeck
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -58,17 +61,17 @@ spec:
           mountPath: /home/rundeck/server/data
         livenessProbe:
           httpGet:
-            path: /
+            path: /user/login
             port: {{ .Values.service.port }}
-          initialDelaySeconds: 120
+          initialDelaySeconds: 240
           periodSeconds: 30
           failureThreshold: 5
         readinessProbe:
           httpGet:
-            path: /
+            path: /user/login
             port: {{ .Values.service.port }}
-          initialDelaySeconds: 60
-          periodSeconds: 10
+          initialDelaySeconds: 180
+          periodSeconds: 15
       volumes:
       - name: data
         persistentVolumeClaim:
