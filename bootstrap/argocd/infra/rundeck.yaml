@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: rundeck
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_rundeck
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-rundeck'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: charts/infra/rundeck
+        helm:
+          releaseName: rundeck
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../clusters/{{.name}}/rundeck/values.yaml
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: clusters/{{.name}}/rundeck/manifests
+        directory:
+          recurse: true
+      destination:
+        name: '{{.name}}'
+        namespace: rundeck
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

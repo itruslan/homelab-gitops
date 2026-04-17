@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: rundeck-pg
+  namespace: rundeck
+spec:
+  instances: 1
+  bootstrap:
+    initdb:
+      database: rundeck
+      owner: rundeck
+      secret:
+        name: rundeck-pg-credentials
+  storage:
+    size: 5Gi

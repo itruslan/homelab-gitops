@@ -25,6 +25,7 @@ metadata:
     deploy_proxmox_csi: "true"
     deploy_proxmox_lb: "true"
     deploy_reloader: "true"
+    deploy_rundeck: "true"
     deploy_vault: "true"
     deploy_victoriametrics: "true"
     deploy_teleport: "true"
