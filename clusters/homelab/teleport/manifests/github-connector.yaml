@@ -12,7 +12,7 @@ spec:
     key: client_secret
   redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"
   teams_to_roles:
-    - organization: "REPLACE_WITH_YOUR_GITHUB_ORG"
+    - organization: "cheburnet-systems"
       team: ""
       roles:
         - editor

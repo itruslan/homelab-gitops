@@ -14,6 +14,9 @@ teleport-cluster:
 
   acme: false
 
+  operator:
+    enabled: true
+
   # TLS via existing wildcard cert (injected per cluster)
   tls:
     existingSecretName: wildcard-itruslan-ru-tls
