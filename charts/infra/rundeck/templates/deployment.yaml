@@ -54,6 +54,10 @@ spec:
           value: "db"
         - name: RUNDECK_PROJECT_STORAGE_TYPE
           value: "db"
+        - name: SERVER_FORWARD_HEADERS_STRATEGY
+          value: "NATIVE"
+        - name: RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_CSP_ENABLED
+          value: "false"
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         volumeMounts:
