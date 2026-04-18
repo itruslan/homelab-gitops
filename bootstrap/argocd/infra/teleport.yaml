@@ -36,11 +36,6 @@ spec:
       destination:
         name: '{{.name}}'
         namespace: teleport
-      ignoreDifferences:
-      - group: resources.teleport.dev
-        kind: TeleportGithubConnector
-        jsonPointers:
-        - /spec/client_secret
       syncPolicy:
         automated:
           prune: true
