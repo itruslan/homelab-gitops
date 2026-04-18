@@ -1,0 +1,20 @@
+apiVersion: resources.teleport.dev/v3
+kind: TeleportGithubConnector
+metadata:
+  name: github
+  namespace: teleport
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  client_id: "Ov23li3l8rIAFr6XaCJ8"
+  client_secret_from_secret:
+    name: teleport-github-oauth
+    key: client_secret
+  redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"
+  teams_to_roles:
+    - organization: "REPLACE_WITH_YOUR_GITHUB_ORG"
+      team: ""
+      roles:
+        - editor
+        - access
+        - auditor

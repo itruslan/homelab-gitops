@@ -8,8 +8,9 @@ teleport-cluster:
     size: 10Gi
 
   authentication:
-    type: local
-    secondFactors: ["otp", "webauthn"]
+    type: github
+    secondFactors: ["webauthn"]
+    connector_name: github
 
   acme: false
 
