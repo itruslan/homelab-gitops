@@ -1,0 +1,11 @@
+apiVersion: resources.teleport.dev/v1
+kind: TeleportRole
+metadata:
+  name: windows-access
+  namespace: teleport
+spec:
+  allow:
+    windows_desktop_labels:
+      "*": ["*"]
+    windows_desktop_logins:
+      - itruslan

@@ -60,5 +60,5 @@ spec:
         - |
           set -e
           AUTH_POD=$(kubectl get pod -n teleport -l app.kubernetes.io/component=auth -o jsonpath='{.items[0].metadata.name}')
-          printf 'kind: github\nversion: v3\nmetadata:\n  name: github\nspec:\n  client_id: "Ov23li3l8rIAFr6XaCJ8"\n  client_secret: "%s"\n  redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"\n  teams_to_roles:\n  - organization: "cheburnet-systems"\n    team: "admins"\n    roles:\n    - editor\n    - access\n    - auditor\n' "$CLIENT_SECRET" > /tmp/connector.yaml
+          printf 'kind: github\nversion: v3\nmetadata:\n  name: github\nspec:\n  client_id: "Ov23li3l8rIAFr6XaCJ8"\n  client_secret: "%s"\n  redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"\n  teams_to_roles:\n  - organization: "cheburnet-systems"\n    team: "admins"\n    roles:\n    - editor\n    - access\n    - auditor\n    - windows-access\n    - admin\n' "$CLIENT_SECRET" > /tmp/connector.yaml
           kubectl exec -n teleport -i "$AUTH_POD" -- tctl create --force -f - < /tmp/connector.yaml
