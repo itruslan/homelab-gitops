@@ -40,7 +40,6 @@ spec:
       - group: resources.teleport.dev
         kind: TeleportGithubConnector
         jsonPointers:
-        - /spec/client_secret_from_secret
         - /spec/client_secret
       syncPolicy:
         automated:

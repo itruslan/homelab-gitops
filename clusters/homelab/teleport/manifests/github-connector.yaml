@@ -7,9 +7,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   client_id: "Ov23li3l8rIAFr6XaCJ8"
-  client_secret_from_secret:
-    name: teleport-github-oauth
-    key: client_secret
+  client_secret: "kubernetes_secret://teleport-github-oauth/client_secret"
   redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"
   teams_to_roles:
     - organization: "cheburnet-systems"
