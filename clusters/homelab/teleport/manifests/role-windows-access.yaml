@@ -1,5 +1,5 @@
 apiVersion: resources.teleport.dev/v1
-kind: TeleportRole
+kind: TeleportRoleV7
 metadata:
   name: windows-access
   namespace: teleport
