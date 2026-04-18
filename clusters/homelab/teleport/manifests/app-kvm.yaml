@@ -1,0 +1,10 @@
+apiVersion: resources.teleport.dev/v1
+kind: TeleportAppV3
+metadata:
+  name: kvm
+  namespace: teleport
+spec:
+  uri: https://kvm.itruslan.ru
+  description: KVM Management
+  labels:
+    env: homelab
