@@ -13,7 +13,7 @@ spec:
   redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"
   teams_to_roles:
     - organization: "cheburnet-systems"
-      team: ""
+      team: "admins"
       roles:
         - editor
         - access
