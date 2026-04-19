@@ -1,5 +1,5 @@
 apiVersion: resources.teleport.dev/v1
-kind: TeleportGithubConnectorV3
+kind: TeleportGithubConnector
 metadata:
   name: github
   namespace: teleport
