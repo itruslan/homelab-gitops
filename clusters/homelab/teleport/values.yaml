@@ -71,3 +71,7 @@ teleport-cluster:
         join_params:
           method: kubernetes
           token_name: teleport-proxy
+      proxy_service:
+        https_keypairs:
+          - key_file: /etc/teleport-tls/tls.key
+            cert_file: /etc/teleport-tls/tls.crt
