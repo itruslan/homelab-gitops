@@ -51,5 +51,12 @@ spec:
       owner: teleport
       secret:
         name: teleport-pg-credentials
+  managed:
+    roles:
+      - name: teleport
+        login: true
+        replication: true
+        passwordSecret:
+          name: teleport-pg-credentials
   storage:
     size: 5Gi
