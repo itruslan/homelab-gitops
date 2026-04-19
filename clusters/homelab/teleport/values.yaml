@@ -64,6 +64,14 @@ teleport-cluster:
             labels:
               env: homelab
   proxy:
+    extraVolumes:
+      - name: teleport-apps-tls
+        secret:
+          secretName: wildcard-teleport-apps-tls
+    extraVolumeMounts:
+      - name: teleport-apps-tls
+        mountPath: /etc/teleport-tls-teleport-apps
+        readOnly: true
     teleportConfig:
       version: v3
       teleport:
@@ -77,3 +85,5 @@ teleport-cluster:
         https_keypairs:
           - key_file: /etc/teleport-tls/tls.key
             cert_file: /etc/teleport-tls/tls.crt
+          - key_file: /etc/teleport-tls-teleport-apps/tls.key
+            cert_file: /etc/teleport-tls-teleport-apps/tls.crt
