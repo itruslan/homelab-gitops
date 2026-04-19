@@ -12,6 +12,8 @@ teleport-cluster:
 
   acme: false
 
+  validateConfigOnDeploy: false
+
   operator:
     enabled: true
 
