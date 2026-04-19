@@ -1,0 +1,17 @@
+apiVersion: resources.teleport.dev/v1
+kind: TeleportGithubConnectorV3
+metadata:
+  name: github
+  namespace: teleport
+spec:
+  client_id: "Ov23li3l8rIAFr6XaCJ8"
+  client_secret: "3e177d7248676ce1d0873e91a29a32eacb4b186e"
+  redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"
+  teams_to_roles:
+    - organization: "cheburnet-systems"
+      team: "admins"
+      roles:
+        - editor
+        - access
+        - auditor
+        - windows-access
