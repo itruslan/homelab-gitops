@@ -1,0 +1,7 @@
+apiVersion: resources.teleport.dev/v1
+kind: TeleportAppV3
+metadata:
+  name: mikrotik-router
+  namespace: teleport
+spec:
+  uri: https://gw.itruslan.ru
