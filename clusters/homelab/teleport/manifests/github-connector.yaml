@@ -3,9 +3,12 @@ kind: TeleportGithubConnector
 metadata:
   name: github
   namespace: teleport
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
-  client_id: "Ov23li3l8rIAFr6XaCJ8"
-  client_secret: "3e177d7248676ce1d0873e91a29a32eacb4b186e"
+  # client_id через secret:// не поддерживается оператором; только client_secret (см. документацию Teleport).
+  client_id: Ov23li3l8rIAFr6XaCJ8
+  client_secret: secret://teleport-github-oauth/client_secret
   redirect_url: "https://teleport.itruslan.ru/v1/webapi/github/callback"
   teams_to_roles:
     - organization: "cheburnet-systems"
