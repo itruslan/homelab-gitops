@@ -45,6 +45,7 @@ metadata:
   namespace: teleport
 spec:
   instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
   bootstrap:
     initdb:
       database: teleport
