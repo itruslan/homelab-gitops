@@ -1,0 +1,14 @@
+apiVersion: resources.teleport.dev/v2
+kind: TeleportProvisionToken
+metadata:
+  name: teleport-proxy
+  namespace: teleport
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+spec:
+  join_method: kubernetes
+  roles:
+    - Proxy
+  kubernetes:
+    allow:
+      - service_account: teleport:teleport-proxy

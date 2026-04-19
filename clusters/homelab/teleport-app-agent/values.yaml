@@ -1,0 +1,3 @@
+teleport-kube-agent:
+  proxyAddr: teleport.itruslan.ru:443
+  teleportClusterName: teleport.itruslan.ru

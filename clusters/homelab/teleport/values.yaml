@@ -67,15 +67,9 @@ teleport-cluster:
         auth_server: teleport-auth.teleport.svc.cluster.local:3025
         join_params:
           method: kubernetes
-          token_name: teleport-proxy-app
+          token_name: teleport-proxy
       proxy_service:
         public_addr: teleport.itruslan.ru:443
         https_keypairs:
           - key_file: /etc/teleport-tls/tls.key
             cert_file: /etc/teleport-tls/tls.crt
-      app_service:
-        enabled: yes
-        resources:
-          - labels:
-              "*": "*"
-        apps: []

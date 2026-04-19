@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: teleport-app-agent
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters:
+      selector:
+        matchExpressions:
+        - key: deploy_teleport
+          operator: In
+          values: ['true']
+  template:
+    metadata:
+      name: '{{.name}}-teleport-app-agent'
+    spec:
+      project: infra
+      sources:
+      - repoURL: https://github.com/itruslan/homelab-gitops.git
+        targetRevision: HEAD
+        path: charts/infra/teleport-app-agent
+        helm:
+          releaseName: teleport-app-agent
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - values.yaml
+          - ../../../clusters/{{.name}}/teleport-app-agent/values.yaml
+      destination:
+        name: '{{.name}}'
+        namespace: teleport
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

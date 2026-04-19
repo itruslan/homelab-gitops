@@ -1,0 +1,11 @@
+teleport-kube-agent:
+  roles: app
+  joinParams:
+    method: kubernetes
+    tokenName: teleport-app-agent
+  appResources:
+    - labels:
+        "*": "*"
+  serviceAccount:
+    create: true
+    name: teleport-app-agent
