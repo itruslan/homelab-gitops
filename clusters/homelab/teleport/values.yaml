@@ -60,12 +60,6 @@ teleport-cluster:
             addr: "192.168.99.100:3389"
             labels:
               env: homelab
-      app_service:
-        enabled: yes
-        resources:
-          - labels:
-              "*": "*"
-        apps: []
   proxy:
     teleportConfig:
       version: v3
@@ -78,3 +72,9 @@ teleport-cluster:
         https_keypairs:
           - key_file: /etc/teleport-tls/tls.key
             cert_file: /etc/teleport-tls/tls.crt
+      app_service:
+        enabled: yes
+        resources:
+          - labels:
+              "*": "*"
+        apps: []
