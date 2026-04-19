@@ -13,6 +13,35 @@ teleport-cluster:
           secretKeyRef:
             name: teleport-pg-conn
             key: conn_string
+    initContainers:
+      - name: envsubst-config
+        image: alpine:3
+        command:
+          - sh
+          - -c
+          - |
+            apk add --no-cache gettext >/dev/null 2>&1
+            envsubst < /etc/teleport/teleport.yaml > /config-rendered/teleport.yaml
+        env:
+          - name: TELEPORT_POSTGRES_CONN
+            valueFrom:
+              secretKeyRef:
+                name: teleport-pg-conn
+                key: conn_string
+        volumeMounts:
+          - name: config
+            mountPath: /etc/teleport
+            readOnly: true
+          - name: config-rendered
+            mountPath: /config-rendered
+    extraVolumes:
+      - name: config-rendered
+        emptyDir: {}
+    extraVolumeMounts:
+      - name: config-rendered
+        mountPath: /config-rendered
+    extraArgs:
+      - --config=/config-rendered/teleport.yaml
     teleportConfig:
       teleport:
         storage:
