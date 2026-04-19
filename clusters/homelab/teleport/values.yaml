@@ -48,6 +48,8 @@ teleport-cluster:
             key: conn_string
     teleportConfig:
       teleport:
+        # scratch mode: chart does not inject common config; must match proxy (multiplex = tunnel on 443, not 3024)
+        proxy_listener_mode: multiplex
         storage:
           type: postgresql
           conn_string: "${TELEPORT_POSTGRES_CONN}"
@@ -64,12 +66,14 @@ teleport-cluster:
     teleportConfig:
       version: v3
       teleport:
+        proxy_listener_mode: multiplex
         auth_server: teleport-auth.teleport.svc.cluster.local:3025
         join_params:
           method: kubernetes
           token_name: teleport-proxy
       proxy_service:
         public_addr: teleport.itruslan.ru:443
+        tunnel_public_addr: teleport.itruslan.ru:443
         https_keypairs:
           - key_file: /etc/teleport-tls/tls.key
             cert_file: /etc/teleport-tls/tls.crt
