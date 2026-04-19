@@ -64,8 +64,7 @@ teleport-cluster:
     teleportConfig:
       version: v3
       teleport:
-        # При включённом app_service нельзя auth_server — только proxy_server (документация Teleport).
-        proxy_server: teleport.itruslan.ru:443
+        auth_server: teleport-auth.teleport.svc.cluster.local:3025
         join_params:
           method: kubernetes
           token_name: teleport-proxy-app
