@@ -29,7 +29,7 @@ metadata:
     deploy_vault: "true"
     deploy_victoriametrics: "true"
     deploy_teleport: "true"
-    deploy_cloudflared_tunnel: "false"
+    deploy_cloudflared_tunnel: "true"
 stringData:
   name: homelab
   server: https://kubernetes.default.svc
