@@ -5,6 +5,3 @@ metadata:
   namespace: teleport
 spec:
   uri: https://kvm.itruslan.ru
-  description: KVM Management
-  labels:
-    env: homelab

@@ -22,6 +22,9 @@ teleport-cluster:
             addr: "192.168.99.100:3389"
             labels:
               env: homelab
+
+  proxy:
+    teleportConfig:
       app_service:
         enabled: yes
         apps: []
