@@ -68,3 +68,6 @@ teleport-cluster:
       version: v3
       teleport:
         auth_server: teleport-auth.teleport.svc.cluster.local:3025
+        join_params:
+          method: kubernetes
+          token_name: teleport-proxy
