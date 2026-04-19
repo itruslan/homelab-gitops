@@ -1,5 +1,5 @@
 teleport-cluster:
-  chartMode: ha
+  chartMode: scratch
   proxyListenerMode: multiplex
 
   persistence:
