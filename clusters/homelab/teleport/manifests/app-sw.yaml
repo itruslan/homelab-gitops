@@ -4,4 +4,4 @@ metadata:
   name: mikrotik-switch
   namespace: teleport
 spec:
-  uri: https://sw.itruslan.ru
+  uri: http://sw.itruslan.ru

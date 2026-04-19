@@ -4,4 +4,4 @@ metadata:
   name: mikrotik-router
   namespace: teleport
 spec:
-  uri: https://gw.itruslan.ru
+  uri: http://gw.itruslan.ru
