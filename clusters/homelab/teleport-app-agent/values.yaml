@@ -1,3 +1,4 @@
 teleport-kube-agent:
   proxyAddr: teleport.itruslan.ru:443
-  teleportClusterName: teleport.itruslan.ru
+  # in_cluster join: projected SA token audience must be the Kubernetes API audience, not the Teleport cluster DNS (see gravitational/teleport#50170).
+  teleportClusterName: https://kubernetes.default.svc.cluster.local
