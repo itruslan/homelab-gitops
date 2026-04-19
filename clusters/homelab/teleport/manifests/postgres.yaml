@@ -1,0 +1,55 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: teleport-pg-credentials
+  namespace: teleport
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: teleport-pg-credentials
+  data:
+  - secretKey: username
+    remoteRef:
+      key: homelab/teleport/postgres
+      property: username
+  - secretKey: password
+    remoteRef:
+      key: homelab/teleport/postgres
+      property: password
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: teleport-pg-conn
+  namespace: teleport
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  refreshInterval: 1h
+  target:
+    name: teleport-pg-conn
+  data:
+  - secretKey: conn_string
+    remoteRef:
+      key: homelab/teleport/postgres
+      property: conn_string
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: teleport-pg
+  namespace: teleport
+spec:
+  instances: 1
+  bootstrap:
+    initdb:
+      database: teleport
+      owner: teleport
+      secret:
+        name: teleport-pg-credentials
+  storage:
+    size: 5Gi

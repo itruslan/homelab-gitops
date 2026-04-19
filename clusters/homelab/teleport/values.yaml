@@ -7,7 +7,16 @@ teleport-cluster:
       external-dns.alpha.kubernetes.io/hostname: teleport.itruslan.ru
 
   auth:
+    extraEnv:
+      - name: TELEPORT_POSTGRES_CONN
+        valueFrom:
+          secretKeyRef:
+            name: teleport-pg-conn
+            key: conn_string
     teleportConfig:
+      storage:
+        type: postgresql
+        conn_string: "${TELEPORT_POSTGRES_CONN}"
       windows_desktop_service:
         enabled: yes
         listen_addr: "0.0.0.0:3028"

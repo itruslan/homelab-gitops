@@ -1,11 +1,9 @@
 teleport-cluster:
-  chartMode: standalone
+  chartMode: ha
   proxyListenerMode: multiplex
 
   persistence:
-    enabled: true
-    storageClassName: proxmox-data
-    size: 10Gi
+    enabled: false
 
   authentication:
     type: github
