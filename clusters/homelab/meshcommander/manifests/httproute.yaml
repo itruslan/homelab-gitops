@@ -1,0 +1,37 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: meshcommander-redirect
+  namespace: meshcommander
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: http
+  hostnames:
+  - meshcommander.itruslan.ru
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: meshcommander
+  namespace: meshcommander
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: meshcommander.itruslan.ru
+spec:
+  parentRefs:
+  - name: homelab
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - meshcommander.itruslan.ru
+  rules:
+  - backendRefs:
+    - name: meshcommander
+      port: 3000
