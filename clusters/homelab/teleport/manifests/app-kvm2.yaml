@@ -1,0 +1,7 @@
+apiVersion: resources.teleport.dev/v1
+kind: TeleportAppV3
+metadata:
+  name: kvm2
+  namespace: teleport
+spec:
+  uri: https://kvm2.itruslan.ru
