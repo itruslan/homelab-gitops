@@ -1,0 +1,45 @@
+# Fork of github.com/cloudflare/helm-charts/charts/cloudflare-tunnel-remote (+ existingSecret).
+
+cloudflare:
+  tunnel_token: ""
+  existingSecret:
+    enabled: false
+    name: ""
+    key: tunnelToken
+
+image:
+  repository: cloudflare/cloudflared
+  pullPolicy: IfNotPresent
+  tag: ""
+
+replicaCount: 2
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

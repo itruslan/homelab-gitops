@@ -21,6 +21,15 @@ spec:
       sources:
         - repoURL: https://github.com/itruslan/homelab-gitops.git
           targetRevision: HEAD
+          path: charts/infra/cloudflared-tunnel
+          helm:
+            releaseName: cloudflared-tunnel
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - values.yaml
+              - ../../../clusters/{{.name}}/cloudflared-tunnel/values.yaml
+        - repoURL: https://github.com/itruslan/homelab-gitops.git
+          targetRevision: HEAD
           path: clusters/{{.name}}/cloudflared-tunnel/manifests
           directory:
             recurse: true
