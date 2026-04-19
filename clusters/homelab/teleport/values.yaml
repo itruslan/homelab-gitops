@@ -64,11 +64,17 @@ teleport-cluster:
             labels:
               env: homelab
   proxy:
+    # Обязательно здесь: chart подмешивает proxy.extraVolumes/extraVolumeMounts в Deployment proxy;
+    # корневые extraVolumes без префикса proxy попадают только в auth — без этого init envsubst падает (нет /config-rendered).
     extraVolumes:
+      - name: config-rendered
+        emptyDir: {}
       - name: teleport-apps-tls
         secret:
           secretName: wildcard-teleport-apps-tls
     extraVolumeMounts:
+      - name: config-rendered
+        mountPath: /config-rendered
       - name: teleport-apps-tls
         mountPath: /etc/teleport-tls-teleport-apps
         readOnly: true
