@@ -12,6 +12,7 @@ metadata:
     deploy_blackbox: "true"
     deploy_cert_sync: "true"
     deploy_cilium: "true"
+    deploy_cloudflared_tunnel: "true"
     deploy_cnpg: "true"
     deploy_coredns: "true"
     deploy_external_dns: "true"
@@ -27,10 +28,9 @@ metadata:
     deploy_proxmox_lb: "true"
     deploy_reloader: "true"
     deploy_rundeck: "true"
+    deploy_teleport: "true"
     deploy_vault: "true"
     deploy_victoriametrics: "true"
-    deploy_teleport: "true"
-    deploy_cloudflared_tunnel: "true"
 stringData:
   name: homelab
   server: https://kubernetes.default.svc
