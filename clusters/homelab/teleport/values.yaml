@@ -4,9 +4,7 @@ teleport-cluster:
   annotations:
     service:
       metallb.universe.tf/address-pool: homelab
-      # См. anylink: несколько имён; вторая — SNI для Application Access (kvm.teleport.itruslan.ru).
-      # Если webhook Mikrotik не создаёт wildcard, добавьте A/CNAME *.teleport.itruslan.ru вручную на тот же IP, что и teleport.
-      external-dns.alpha.kubernetes.io/hostname: "teleport.itruslan.ru,*.teleport.itruslan.ru"
+      external-dns.alpha.kubernetes.io/hostname: teleport.itruslan.ru
 
   initContainers:
     - name: envsubst-config
