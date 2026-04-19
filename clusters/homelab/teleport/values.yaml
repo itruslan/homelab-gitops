@@ -63,3 +63,7 @@ teleport-cluster:
       app_service:
         enabled: yes
         apps: []
+  proxy:
+    teleportConfig:
+      teleport:
+        auth_server: teleport-auth.teleport.svc.cluster.local:3025

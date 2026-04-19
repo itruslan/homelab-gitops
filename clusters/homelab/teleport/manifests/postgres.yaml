@@ -59,5 +59,8 @@ spec:
         replication: true
         passwordSecret:
           name: teleport-pg-credentials
+  postgresql:
+    parameters:
+      dynamic_library_path: '$libdir:/var/lib/postgresql/data/pgdata'
   storage:
     size: 5Gi
