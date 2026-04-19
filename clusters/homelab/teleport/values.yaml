@@ -65,5 +65,6 @@ teleport-cluster:
         apps: []
   proxy:
     teleportConfig:
+      version: v3
       teleport:
         auth_server: teleport-auth.teleport.svc.cluster.local:3025
