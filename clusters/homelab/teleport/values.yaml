@@ -14,19 +14,15 @@ teleport-cluster:
             name: teleport-pg-conn
             key: conn_string
     teleportConfig:
-      storage:
-        type: postgresql
-        conn_string: "${TELEPORT_POSTGRES_CONN}"
+      teleport:
+        storage:
+          type: postgresql
+          conn_string: "${TELEPORT_POSTGRES_CONN}"
       windows_desktop_service:
         enabled: yes
         listen_addr: "0.0.0.0:3028"
         public_addr: "teleport-wds.teleport.svc.cluster.local:3028"
         static_hosts:
-          # Add your Windows machines here
-          # - name: my-windows-pc
-          #   addr: "192.168.1.100:3389"
-          #   labels:
-          #     env: homelab
           - name: windows-11
             addr: "192.168.99.100:3389"
             labels:
