@@ -1,4 +1,4 @@
-apiVersion: resources.teleport.dev/v1
+apiVersion: resources.teleport.dev/v3
 kind: TeleportGithubConnector
 metadata:
   name: github
