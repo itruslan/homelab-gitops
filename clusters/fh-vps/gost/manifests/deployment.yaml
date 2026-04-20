@@ -12,6 +12,9 @@ spec:
     metadata:
       labels:
         app: gost
+      annotations:
+        reloader.stakater.com/auto: "true"
+        secret.reloader.stakater.com/reload: "gost-config,gost-tls"
     spec:
       containers:
       - name: gost
