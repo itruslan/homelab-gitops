@@ -21,6 +21,22 @@ spec:
         app.kubernetes.io/name: rundeck
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      {{- if .Values.rundeck.oidc.enabled }}
+      initContainers:
+      - name: setup-preauth
+        image: busybox:1.36
+        command:
+        - sh
+        - -c
+        - |
+          mkdir -p /partials/rundeck-config
+          cp /preauth/*.properties /partials/rundeck-config/
+        volumeMounts:
+        - name: remco-partials
+          mountPath: /partials
+        - name: preauth-config
+          mountPath: /preauth
+      {{- end }}
       containers:
       - name: rundeck
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -58,25 +74,15 @@ spec:
           value: "NATIVE"
         - name: RUNDECK_SECURITY_HTTPHEADERS_PROVIDER_CSP_ENABLED
           value: "false"
-        {{- if .Values.rundeck.oidc.enabled }}
-        - name: RUNDECK_SECURITY_AUTHORIZATION_PREAUTHENTICATED_ENABLED
-          value: "true"
-        - name: RUNDECK_SECURITY_AUTHORIZATION_PREAUTHENTICATED_ATTRIBUTENAME
-          value: "REMOTE_USER_HEADER"
-        - name: RUNDECK_SECURITY_AUTHORIZATION_PREAUTHENTICATED_USERNAMEHEADER
-          value: "X-Auth-Request-User"
-        - name: RUNDECK_SECURITY_AUTHORIZATION_PREAUTHENTICATED_USERROLESHEADER
-          value: "X-Auth-Request-Groups"
-        - name: RUNDECK_SECURITY_AUTHORIZATION_PREAUTHENTICATED_DELIMITER
-          value: ","
-        - name: RUNDECK_SECURITY_AUTHORIZATION_PREAUTHENTICATED_USERSYNCENTABLED
-          value: "true"
-        {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         volumeMounts:
         - name: data
           mountPath: /home/rundeck/server/data
+        {{- if .Values.rundeck.oidc.enabled }}
+        - name: remco-partials
+          mountPath: /tmp/remco-partials
+        {{- end }}
         {{- if .Values.rundeck.acl.enabled }}
         {{- range $path, $_ := .Files.Glob "files/policies/*.aclpolicy" }}
         - name: acl-policies
@@ -165,6 +171,13 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: rundeck-data
+      {{- if .Values.rundeck.oidc.enabled }}
+      - name: remco-partials
+        emptyDir: {}
+      - name: preauth-config
+        configMap:
+          name: rundeck-preauth
+      {{- end }}
       {{- if .Values.rundeck.acl.enabled }}
       - name: acl-policies
         configMap:

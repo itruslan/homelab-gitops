@@ -1,0 +1,21 @@
+{{- if .Values.rundeck.oidc.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rundeck-preauth
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+data:
+  zz_preauth.properties: |
+    rundeck.security.authorization.preauthenticated.enabled=true
+    rundeck.security.authorization.preauthenticated.attributeName=REMOTE_USER_GROUPS
+    rundeck.security.authorization.preauthenticated.delimiter=,
+    rundeck.security.authorization.preauthenticated.userNameHeader=X-Auth-Request-User
+    rundeck.security.authorization.preauthenticated.userRolesHeader=X-Auth-Request-Groups
+    rundeck.security.authorization.preauthenticated.redirectLogout=true
+    rundeck.security.authorization.preauthenticated.redirectUrl=/oauth2/sign_out
+    rundeck.security.authorization.preauthenticated.userSyncEnabled=true
+    rundeck.security.authorization.preauthenticated.userFirstNameHeader=X-Auth-Request-Preferred-Username
+    rundeck.security.authorization.preauthenticated.userEmailHeader=X-Auth-Request-Email
+{{- end }}
