@@ -1,4 +1,4 @@
-description: Rundeck admins - full access to all projects
+description: Rundeck admins - full access to projects
 context:
   project: '.*'
 for:
@@ -18,6 +18,33 @@ context:
   application: 'rundeck'
 for:
   resource:
+    - equals:
+        kind: project
+      allow: [read, create, delete]
+    - equals:
+        kind: system
+      allow: [read, enable_executions, disable_executions, admin, ops_admin]
+    - equals:
+        kind: system_acl
+      allow: [read, create, update, delete, admin]
+    - equals:
+        kind: user
+      allow: [admin]
+    - equals:
+        kind: job
+      allow: [admin]
+    - equals:
+        kind: plugin
+      allow: [read, install, admin]
+  project:
+    - match:
+        name: '.*'
+      allow: [read, import, export, configure, delete, admin]
+  project_acl:
+    - match:
+        name: '.*'
+      allow: [read, create, update, delete, admin]
+  storage:
     - allow: '*'
 by:
   group: rundeck-admins
