@@ -1,0 +1,23 @@
+description: Rundeck admins - full access to all projects
+context:
+  project: '.*'
+for:
+  resource:
+    - allow: '*'
+  adhoc:
+    - allow: '*'
+  job:
+    - allow: '*'
+  node:
+    - allow: '*'
+by:
+  group: rundeck-admins
+---
+description: Rundeck admins - full access to application
+context:
+  application: 'rundeck'
+for:
+  resource:
+    - allow: '*'
+by:
+  group: rundeck-admins

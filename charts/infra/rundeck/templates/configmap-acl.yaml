@@ -1,0 +1,14 @@
+{{- if .Values.rundeck.acl.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rundeck-acl
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+data:
+  {{- range $path, $content := .Files.Glob "files/policies/*.aclpolicy" }}
+  {{ base $path }}: |
+    {{ $content | toString | nindent 4 }}
+  {{- end }}
+{{- end }}

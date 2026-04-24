@@ -1,0 +1,42 @@
+description: Rundeck users - read and execute jobs
+context:
+  project: '.*'
+for:
+  resource:
+    - equals:
+        kind: job
+      allow: [read, run, kill, view]
+    - equals:
+        kind: node
+      allow: [read, run]
+    - equals:
+        kind: adhoc
+      allow: [run, read, kill]
+    - match:
+        type: resource
+      allow: [read]
+  job:
+    - allow: [read, run, kill, view]
+  node:
+    - allow: [read, run]
+  adhoc:
+    - allow: [run, read, kill]
+by:
+  group: rundeck-users
+---
+description: Rundeck users - application read access
+context:
+  application: 'rundeck'
+for:
+  resource:
+    - equals:
+        kind: project
+      allow: [read]
+    - equals:
+        kind: user
+      allow: [admin]
+    - match:
+        type: resource
+      allow: [read]
+by:
+  group: rundeck-users

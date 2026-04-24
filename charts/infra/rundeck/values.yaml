@@ -36,6 +36,9 @@ rundeck:
     authentikDomain: ""
     appSlug: "rundeck"
     adminGroup: ""
+    allowUnverifiedEmail: "false"
     proxy:
       image: "quay.io/oauth2-proxy/oauth2-proxy:v7.6.0"
       port: 4180
+  acl:
+    enabled: false

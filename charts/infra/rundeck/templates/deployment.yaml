@@ -77,6 +77,13 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /home/rundeck/server/data
+        {{- if .Values.rundeck.acl.enabled }}
+        {{- range $path, $_ := .Files.Glob "files/policies/*.aclpolicy" }}
+        - name: acl-policies
+          mountPath: /home/rundeck/server/config/{{ base $path }}
+          subPath: {{ base $path }}
+        {{- end }}
+        {{- end }}
         livenessProbe:
           httpGet:
             path: /user/login
@@ -137,10 +144,8 @@ spec:
           value: "lax"
         - name: OAUTH2_PROXY_SESSION_STORE_TYPE
           value: "cookie"
-        - name: OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST
-          value: "true"
-        - name: OAUTH2_PROXY_COOKIE_CSRF_EXPIRE
-          value: "5m"
+        - name: OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL
+          value: {{ .Values.rundeck.oidc.allowUnverifiedEmail | default "false" | quote }}
         ports:
         - containerPort: {{ .Values.rundeck.oidc.proxy.port }}
         livenessProbe:
@@ -160,3 +165,8 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: rundeck-data
+      {{- if .Values.rundeck.acl.enabled }}
+      - name: acl-policies
+        configMap:
+          name: rundeck-acl
+      {{- end }}

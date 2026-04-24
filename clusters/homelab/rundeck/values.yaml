@@ -7,3 +7,6 @@ rundeck:
     enabled: true
     authentikDomain: "auth.itruslan.ru"
     adminGroup: "rundeck-admins"
+    allowUnverifiedEmail: "true"
+  acl:
+    enabled: true
