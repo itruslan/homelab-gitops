@@ -25,6 +25,7 @@ external-dns:
           value: "Managed by ExternalDNS"
   sources:
     - gateway-httproute
+    - gateway-grpcroute
     - service
   policy: sync
   txtOwnerId: homelab
