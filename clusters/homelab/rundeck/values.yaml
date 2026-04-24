@@ -1,2 +1,9 @@
+service:
+  targetPort: 4180
+
 rundeck:
   grailsUrl: "https://rundeck.itruslan.ru"
+  oidc:
+    enabled: true
+    authentikDomain: "auth.itruslan.ru"
+    adminGroup: "rundeck-admins"
