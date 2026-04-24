@@ -41,13 +41,15 @@ kind: GRPCRoute
 metadata:
   name: argocd-grpc
   namespace: argocd
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: argocd-grpc.itruslan.ru
 spec:
   parentRefs:
   - name: homelab
     namespace: gateway
     sectionName: https
   hostnames:
-  - argocd.itruslan.ru
+  - argocd-grpc.itruslan.ru
   rules:
   - backendRefs:
     - name: argo-cd-argocd-server
