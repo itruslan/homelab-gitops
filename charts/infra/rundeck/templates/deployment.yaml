@@ -29,8 +29,9 @@ spec:
         - sh
         - -c
         - |
-          mkdir -p /partials/rundeck-config
+          mkdir -p /partials/rundeck-config /partials/framework /partials/artifact-repositories
           cp /preauth/*.properties /partials/rundeck-config/
+          chmod -R 0777 /partials
         volumeMounts:
         - name: remco-partials
           mountPath: /partials
