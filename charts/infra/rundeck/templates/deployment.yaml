@@ -87,7 +87,7 @@ spec:
         {{- if .Values.rundeck.acl.enabled }}
         {{- range $path, $_ := .Files.Glob "files/policies/*.aclpolicy" }}
         - name: acl-policies
-          mountPath: /home/rundeck/server/config/{{ base $path }}
+          mountPath: /home/rundeck/etc/{{ base $path }}
           subPath: {{ base $path }}
         {{- end }}
         {{- end }}
