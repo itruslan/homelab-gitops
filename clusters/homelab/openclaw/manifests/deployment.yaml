@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openclaw
+  namespace: openclaw
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: openclaw
+  template:
+    metadata:
+      labels:
+        app: openclaw
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: k8s-worker-3
+      containers:
+      - name: openclaw
+        image: ghcr.io/openclaw/openclaw:2026.3.13-1
+        imagePullPolicy: IfNotPresent
+        args:
+        - gateway
+        - --bind
+        - lan
+        - --port
+        - "18789"
+        env:
+        - name: TZ
+          value: Europe/Moscow
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openclaw-credentials
+              key: ANTHROPIC_API_KEY
+              optional: true
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openclaw-credentials
+              key: OPENAI_API_KEY
+              optional: true
+        ports:
+        - name: gateway
+          containerPort: 18789
+        - name: canvas
+          containerPort: 18793
+        volumeMounts:
+        - name: data
+          mountPath: /workspace
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: "2"
+            memory: 2Gi
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: openclaw-data

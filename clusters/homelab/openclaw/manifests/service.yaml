@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openclaw
+  namespace: openclaw
+spec:
+  selector:
+    app: openclaw
+  ports:
+  - name: gateway
+    port: 18789
+    targetPort: gateway
+  - name: canvas
+    port: 18793
+    targetPort: canvas

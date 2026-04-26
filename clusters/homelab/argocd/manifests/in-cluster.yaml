@@ -24,6 +24,7 @@ metadata:
     deploy_meshcommander: "true"
     deploy_metallb: "true"
     deploy_kvm_lb: "true"
+    deploy_openclaw: "true"
     deploy_proxmox_csi: "true"
     deploy_proxmox_lb: "true"
     deploy_reloader: "true"
