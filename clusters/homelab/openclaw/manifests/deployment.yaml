@@ -55,8 +55,8 @@ spec:
             cpu: 200m
             memory: 512Mi
           limits:
-            cpu: "2"
-            memory: 2Gi
+            cpu: "12"
+            memory: 16Gi
       volumes:
       - name: data
         persistentVolumeClaim:
