@@ -10,6 +10,7 @@ data:
         "bind": "lan",
         "port": 18789,
         "controlUi": {
+          "dangerouslyDisableDeviceAuth": true,
           "allowedOrigins": [
             "https://openclaw.itruslan.ru"
           ]
