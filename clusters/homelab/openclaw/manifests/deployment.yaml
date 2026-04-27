@@ -17,18 +17,37 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: k8s-worker-3
+      initContainers:
+      - name: init-config
+        image: busybox:1.36
+        command: ["sh", "-c"]
+        args:
+        - cp /config-ro/openclaw.json /config-rw/openclaw.json
+        volumeMounts:
+        - name: config-ro
+          mountPath: /config-ro
+          readOnly: true
+        - name: config-rw
+          mountPath: /config-rw
       containers:
       - name: openclaw
         image: ghcr.io/openclaw/openclaw:2026.3.13-1
         imagePullPolicy: IfNotPresent
-        command: ["sh", "-c"]
+        command: ["node", "dist/index.js"]
         args:
-        - cp /etc/openclaw/openclaw.json /tmp/openclaw.json && exec node dist/index.js gateway --allow-unconfigured --bind lan --port 18789
+        - gateway
+        - --allow-unconfigured
         env:
         - name: TZ
           value: Europe/Moscow
         - name: OPENCLAW_CONFIG_PATH
-          value: /tmp/openclaw.json
+          value: /config-rw/openclaw.json
+        - name: OPENCLAW_GATEWAY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: openclaw-credentials
+              key: OPENCLAW_GATEWAY_TOKEN
+              optional: true
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
@@ -43,9 +62,8 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /workspace
-        - name: config
-          mountPath: /etc/openclaw
-          readOnly: true
+        - name: config-rw
+          mountPath: /config-rw
         resources:
           requests:
             cpu: 200m
@@ -57,6 +75,8 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: openclaw-data
-      - name: config
+      - name: config-ro
         configMap:
           name: openclaw-config
+      - name: config-rw
+        emptyDir: {}
