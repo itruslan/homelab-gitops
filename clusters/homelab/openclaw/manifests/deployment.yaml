@@ -21,22 +21,14 @@ spec:
       - name: openclaw
         image: ghcr.io/openclaw/openclaw:2026.3.13-1
         imagePullPolicy: IfNotPresent
-        command: ["node", "dist/index.js"]
+        command: ["sh", "-c"]
         args:
-        - gateway
-        - --bind
-        - lan
-        - --port
-        - "18789"
+        - cp /etc/openclaw/openclaw.json /tmp/openclaw.json && exec node dist/index.js gateway --allow-unconfigured --bind lan --port 18789
         env:
         - name: TZ
           value: Europe/Moscow
-        - name: ANTHROPIC_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: openclaw-credentials
-              key: ANTHROPIC_API_KEY
-              optional: true
+        - name: OPENCLAW_CONFIG_PATH
+          value: /tmp/openclaw.json
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
@@ -51,6 +43,9 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /workspace
+        - name: config
+          mountPath: /etc/openclaw
+          readOnly: true
         resources:
           requests:
             cpu: 200m
@@ -62,3 +57,6 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: openclaw-data
+      - name: config
+        configMap:
+          name: openclaw-config
