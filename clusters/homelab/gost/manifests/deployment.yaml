@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: gost
-        image: gogost/gost:3
+        image: gogost/gost:latest
         imagePullPolicy: IfNotPresent
         args:
         - -C
